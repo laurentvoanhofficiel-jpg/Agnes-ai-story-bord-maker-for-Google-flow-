@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Visual.Studio — Film Storyboard Lab</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;background:#020617;color:#f1f5f9;min-height:100vh;padding:1rem 1rem 12rem;font-size:14px;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto}
+header{text-align:center;padding:1.5rem 0;border-bottom:1px solid #1e293b;margin-bottom:1.5rem}
+h1{font-family:Georgia,serif;font-size:2.2rem;font-weight:300;letter-spacing:.02em;margin-bottom:.4rem;background:linear-gradient(135deg,#e87b35 0%,#e5c15a 30%,#a8d8c8 50%,#c8b0e0 75%,#8b5fc4 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1.05}
+.sub{font-family:Georgia,serif;font-style:italic;font-size:.85rem;color:#64748b}
+.kata{font-size:.7rem;letter-spacing:.4em;color:#fbbf24;opacity:.75;text-transform:uppercase;margin-bottom:.5rem}
+.banner{background:linear-gradient(135deg,rgba(139,95,196,.06),rgba(16,185,129,.05));border:1px solid #1e293b;border-left:2px solid #a78bfa;border-radius:4px;padding:1rem 1.15rem;font-size:.78rem;color:#94a3b8;margin-bottom:1.2rem;line-height:1.6}
+.banner strong{color:#f1f5f9;font-weight:600}
+.banner .hl-v{color:#c4b5fd}.banner .hl-e{color:#6ee7b7}.banner .hl-a{color:#fcd34d}
+.card{background:#0f172a;border:1px solid #1e293b;border-radius:4px;margin-bottom:1rem;overflow:hidden}
+.card-head{padding:.85rem 1rem;border-bottom:1px solid #1e293b;display:flex;justify-content:space-between;align-items:center;font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:#e2e8f0;font-weight:600}
+.card-head .badge{font-size:.6rem;padding:.15rem .5rem;border:1px solid #b45309;color:#fbbf24;border-radius:2px;letter-spacing:.1em}
+.card-body{padding:1rem}
+textarea,input[type=text],input[type=password]{width:100%;background:#020617;border:1px solid #1e293b;border-radius:4px;padding:.7rem .85rem;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:.78rem;color:#f1f5f9;outline:none}
+textarea:focus,input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+textarea{min-height:90px;resize:vertical;line-height:1.55}
+textarea.scenario{min-height:150px;font-size:.82rem;line-height:1.65;border-color:#4c1d95}
+textarea.scenario:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.15)}
+.btn{width:100%;padding:.85rem;border-radius:4px;font-size:.78rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s}
+.btn-amber{background:linear-gradient(135deg,rgba(232,123,53,.15),rgba(229,193,90,.1));border-color:#b45309;color:#fcd34d}
+.btn-amber:hover:not(:disabled){background:rgba(245,158,11,.2)}
+.btn-amber:disabled{opacity:.3;cursor:not-allowed}
+.btn-red{background:transparent;border-color:#b91c1c;color:#f87171}
+.btn-slate{background:transparent;border-color:#334155;color:#94a3b8;font-size:.68rem;padding:.6rem}
+.btn-slate:hover{color:#f87171;border-color:#b91c1c}
+.row{display:flex;gap:.5rem;margin-top:.6rem}
+.status-line{display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem;background:#020617;border:1px solid #1e293b;border-radius:4px;font-size:.75rem;color:#64748b;margin-top:.7rem}
+.status-line.ok{background:rgba(16,185,129,.08);border-color:#065f46;color:#34d399}
+.status-line.err{background:rgba(239,68,68,.08);border-color:#7f1d1d;color:#f87171}
+.status-line .dot{width:6px;height:6px;border-radius:50%;background:#475569;flex-shrink:0}
+.status-line.ok .dot{background:#10b981;box-shadow:0 0 6px #10b981}
+.status-line.err .dot{background:#ef4444}
+.hint{font-size:.7rem;color:#64748b;margin-top:.5rem}
+.hint a{color:#60a5fa;text-decoration:none;border-bottom:1px dotted #1e40af}
+.drop{border:2px dashed #334155;border-radius:4px;padding:1.5rem 1rem;text-align:center;cursor:pointer;position:relative;transition:all .15s}
+.drop:hover{border-color:#b45309;background:rgba(245,158,11,.03)}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop .icon{font-size:2rem;opacity:.5;margin-bottom:.4rem}
+.drop .txt{font-size:.82rem;color:#94a3b8}
+.drop .txt strong{color:#fcd34d}
+.drop .sub{font-size:.68rem;color:#475569;margin-top:.4rem;font-family:ui-monospace,monospace}
+.preview{margin-top:.8rem;text-align:center}
+.preview img{max-width:100%;max-height:280px;border:1px solid #1e293b;border-radius:4px;display:block;margin:0 auto}
+.preview .name{font-size:.66rem;color:#fcd34d;font-family:ui-monospace,monospace;margin-top:.4rem}
+.analysis{background:#020617;border:1px solid #1e293b;border-radius:4px;padding:.75rem;margin-top:.7rem;font-size:.7rem;font-family:ui-monospace,monospace;color:#94a3b8;max-height:280px;overflow-y:auto;white-space:pre-wrap;display:none}
+.analysis.visible{display:block}
+.analysis .k{color:#fbbf24;font-weight:700}
+.story-box{display:none;background:#020617;border:1px solid #1e293b;border-left:2px solid #8b5cf6;border-radius:4px;padding:.9rem 1rem;margin-top:.8rem;font-size:.75rem;color:#cbd5e1}
+.story-box.visible{display:block}
+.story-box .story-title{font-family:Georgia,serif;font-size:1.1rem;color:#fcd34d;letter-spacing:.05em;margin-bottom:.3rem}
+.story-box .story-logline{font-family:Georgia,serif;font-style:italic;color:#a78bfa;margin-bottom:.7rem;font-size:.8rem;line-height:1.5}
+.story-box .story-section{margin-top:.6rem;line-height:1.55}
+.story-box .story-section .k{font-family:ui-monospace,monospace;font-size:.6rem;letter-spacing:.12em;color:#fbbf24;text-transform:uppercase;display:block;margin-bottom:.25rem}
+.story-box ul,.story-box ol{margin-left:1.1rem}
+.story-box li{margin-bottom:.15rem;color:#94a3b8}
+.story-box li strong{color:#e2e8f0}
+.story-box li em{color:#a78bfa;font-style:italic}
+.phase{background:#0f172a;border:1px solid #1e293b;border-left:2px solid #8b5cf6;border-radius:4px;padding:.85rem 1rem;margin-bottom:1rem;display:none}
+.phase.visible{display:block}
+.steps{display:flex;gap:.3rem;margin-bottom:.6rem;flex-wrap:wrap}
+.step{flex:1;min-width:60px;padding:.4rem .3rem;text-align:center;font-size:.55rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;background:#020617;border:1px solid #1e293b;border-radius:4px;color:#475569}
+.step.active{background:rgba(245,158,11,.08);border-color:#b45309;color:#fcd34d}
+.step.done{background:rgba(16,185,129,.08);border-color:#065f46;color:#34d399}
+.phase-info{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem;font-size:.72rem;font-family:ui-monospace,monospace;color:#94a3b8}
+.queue{display:none;background:#0f172a;border:1px solid #1e293b;border-left:2px solid #8b5cf6;border-radius:4px;padding:.7rem .9rem;margin-bottom:1rem;font-size:.72rem;font-family:ui-monospace,monospace}
+.queue.visible{display:block}
+.grid{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1024px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.photo{background:#0f172a;border:1px solid #1e293b;border-radius:4px;overflow:hidden}
+.photo-img{aspect-ratio:9/16;background:#000;display:flex;align-items:center;justify-content:center;position:relative}
+.photo-img img{width:100%;height:100%;object-fit:contain;display:block}
+.photo-img .load{width:100%;height:100%;background:#020617;display:flex;align-items:center;justify-content:center;color:#475569;font-size:.72rem;font-family:ui-monospace,monospace;position:relative;overflow:hidden}
+.photo-img .load::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(245,158,11,.06) 50%,transparent 70%);animation:shim 1.8s linear infinite}
+@keyframes shim{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.photo-img .err{width:100%;height:100%;background:rgba(127,29,29,.2);display:flex;align-items:center;justify-content:center;color:#f87171;font-size:.72rem;text-align:center;padding:.6rem}
+.photo-meta{padding:.7rem;border-top:1px solid #1e293b}
+.pbadge{display:inline-block;font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;padding:.12rem .45rem;border-radius:2px;margin-right:.3rem;margin-bottom:.4rem;font-weight:700;border:1px solid}
+.pbadge.ref{background:rgba(245,158,11,.1);color:#fbbf24;border-color:#92400e}
+.pbadge.hp{background:rgba(139,92,246,.1);color:#a78bfa;border-color:#5b21b6}
+.pbadge.hg{background:rgba(59,130,246,.1);color:#60a5fa;border-color:#1e40af}
+.pbadge.oth{background:rgba(16,185,129,.1);color:#34d399;border-color:#065f46}
+.pbadge.dec{background:rgba(236,72,153,.1);color:#f472b6;border-color:#831843}
+.pbadge.det{background:rgba(234,179,8,.1);color:#facc15;border-color:#854d0e}
+.ptitle{font-family:Georgia,serif;font-size:.85rem;color:#fcd34d;margin-bottom:.3rem}
+.pbeat{font-size:.62rem;color:#a78bfa;font-style:italic;margin-bottom:.5rem;line-height:1.4}
+.pblock{background:#020617;border:1px solid #1e293b;border-radius:4px;padding:.5rem;margin-bottom:.4rem;position:relative}
+.pblock.video{border-left:2px solid #7c3aed}
+.plabel{font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;color:#64748b;font-family:ui-monospace,monospace;margin-bottom:.25rem}
+.pblock.video .plabel{color:#a78bfa}
+.ptext{font-size:.65rem;color:#94a3b8;font-family:ui-monospace,monospace;line-height:1.45;max-height:100px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;padding-right:3.5rem}
+.pcopy{position:absolute;top:.3rem;right:.3rem;font-size:.55rem;padding:.12rem .4rem;border:1px solid #334155;border-radius:2px;background:transparent;color:#64748b;cursor:pointer}
+.pcopy:hover{color:#fcd34d;border-color:#b45309}
+.popen{display:block;text-align:center;margin-top:.5rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.15em;padding:.4rem;border:1px solid #334155;border-radius:4px;color:#94a3b8;text-decoration:none}
+.popen:hover{color:#fcd34d;border-color:#b45309}
+.panel{position:fixed;bottom:0;left:0;right:0;z-index:40}
+.handle{background:#0f172a;border-top:2px solid #b45309;padding:.55rem 1rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.handle .left{display:flex;align-items:center;gap:.6rem;min-width:0;flex:1}
+.handle .toggle{font-family:ui-monospace,monospace;font-size:.72rem;color:#fbbf24;letter-spacing:.1em}
+.handle .latest{font-size:.72rem;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.handle .actions{display:flex;gap:.3rem}
+.handle .actions button{font-size:.6rem;padding:.2rem .5rem;border:1px solid #334155;border-radius:3px;background:transparent;color:#64748b;cursor:pointer}
+.handle .actions button:hover{color:#fcd34d;border-color:#b45309}
+.panel-content{background:#020617;border-top:1px solid #1e293b;max-height:60vh;overflow-y:auto}
+.panel-content.hidden{display:none}
+.human-log{max-height:100px;overflow-y:auto;padding:.6rem 1rem;border-bottom:1px solid #1e293b;font-family:ui-monospace,monospace;font-size:.7rem}
+.human-log>div{margin-bottom:.2rem}
+.human-log .t{color:#475569}
+.human-log .m{color:#34d399}
+.debug-log{max-height:240px;overflow-y:auto;padding:.6rem 1rem;font-family:ui-monospace,monospace;font-size:.68rem}
+.debug-log>div{margin-bottom:.15rem;word-break:break-word}
+.debug-log .t{color:#475569}
+.debug-log .info{color:#94a3b8}
+.debug-log .ok{color:#34d399}
+.debug-log .warn{color:#fbbf24}
+.debug-log .err{color:#f87171}
+.debug-log .api{color:#60a5fa}
+.toast{position:fixed;top:1rem;left:50%;transform:translateX(-50%) translateY(-120px);background:#0f172a;border:1px solid #1e293b;border-left:3px solid #fbbf24;border-radius:4px;padding:.75rem 1.2rem;font-size:.8rem;z-index:1000;opacity:0;transition:transform .3s,opacity .3s;max-width:90vw;text-align:center}
+.toast.visible{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.success{border-left-color:#10b981}
+.toast.error{border-left-color:#ef4444}
+.toast.warn{border-left-color:#f59e0b}
+.status-bar{position:fixed;bottom:60px;left:0;right:0;background:#0f172a;border-top:1px solid #1e293b;padding:.5rem 1rem;font-size:.7rem;font-family:ui-monospace,monospace;color:#f1f5f9;display:flex;align-items:center;gap:.5rem;transform:translateY(100%);transition:transform .3s;z-index:30}
+.status-bar.visible{transform:translateY(0)}
+.status-bar .spinner{width:12px;height:12px;border:2px solid rgba(245,158,11,.2);border-top-color:#f59e0b;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:#0f172a}
+::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<div class="kata">武 · Visual.Studio · Film Storyboard Lab</div>
+<h1>Visual.Studio</h1>
+<p class="sub">100 plans-image · un film raconté · premières images pour Google Flow</p>
+</header>
+
+<div class="banner">
+<strong>Principe :</strong> ajoutez vos <strong class="hl-v">clés API</strong>, une <strong class="hl-e">image de référence</strong> (le protagoniste) et un <strong class="hl-a">scénario de film</strong>. L'IA analyse, écrit le <strong>storyboard</strong> et génère <strong>100 plans-image 9:16</strong> — chacun est la <strong>première image d'un plan</strong> pour Google Flow. La variété est imposée : <em>protagoniste seul, protagoniste avec d'autres, autres personnages seuls, décors vides, détails/props</em> — dans l'ordre de l'intrigue. Chaque image affiche son <strong class="hl-v">prompt image</strong> et son <strong class="hl-v">prompt vidéo Google Flow</strong> copiables.
+</div>
+
+<section class="card">
+<div class="card-head"><span>🔑 Clés API Agnes</span><span class="badge" id="keyBadge">0 validée</span></div>
+<div class="card-body">
+<textarea id="keysInput" placeholder="Collez vos clés API ici, une par ligne :&#10;sk-xxxxxxxxxxxx&#10;sk-yyyyyyyyyyyy" autocomplete="off" spellcheck="false"></textarea>
+<div class="row">
+<button class="btn btn-amber" id="validateBtn">🔐 Valider et enregistrer</button>
+<button class="btn btn-slate" id="clearBtn" style="width:auto;min-width:80px;">Effacer</button>
+</div>
+<div class="status-line" id="keyStatus"><span class="dot"></span><span id="keyStatusText">Aucune clé enregistrée</span></div>
+<div class="hint">Clé sur <a href="https://platform.agnes-ai.com" target="_blank">platform.agnes-ai.com</a> → Settings → API Keys.</div>
+</div>
+</section>
+
+<section class="card">
+<div class="card-head"><span>🖼️ Image de référence — le protagoniste</span><span class="badge" id="refBadge">0 image</span></div>
+<div class="card-body">
+<label class="drop">
+<input type="file" accept="image/*" id="refInput">
+<div class="icon">📷</div>
+<div class="txt"><strong>Cliquez pour choisir une image</strong><br>Visage du protagoniste</div>
+<div class="sub">Sert à verrouiller le visage pour tout le film.</div>
+</label>
+<div class="preview hidden" id="refPreview">
+<img id="refPreviewImg" alt="">
+<div class="name" id="refPreviewName"></div>
+<div class="row" style="justify-content:center;">
+<button class="btn btn-amber" id="analyzeBtn" style="max-width:200px;">Analyser</button>
+<button class="btn btn-slate" id="removeRefBtn" style="max-width:120px;">Retirer</button>
+</div>
+</div>
+<div class="analysis" id="analysisBox"></div>
+<div class="story-box" id="storyBox"></div>
+</div>
+</section>
+
+<section class="card">
+<div class="card-head"><span>🎬 Scénario du film</span><span class="badge" id="scenarioBadge">0 mot</span></div>
+<div class="card-body">
+<textarea id="scenarioInput" class="scenario" placeholder="Racontez votre film : intrigue, personnages, lieux, ton, époque, ambiance…&#10;&#10;Ex : « Dans le Paris des années 60, une détective solitaire enquête sur la disparition d'un pianiste de jazz. Elle croise des musiciens de nuit, des cafés enfumés, des quais brumeux. Peu à peu, elle tombe amoureuse du principal suspect. »" rows="7" spellcheck="false"></textarea>
+<div class="hint">Le scénario dirige l'<strong>ordre</strong> et le <strong>sujet</strong> de chaque plan. Image + scénario = les deux pris en compte. Sans scénario, l'IA invente une histoire à partir de l'image.</div>
+</div>
+</section>
+
+<section class="card">
+<div class="card-head"><span>✍️ Notes additionnelles (optionnel)</span><span class="badge" id="promptBadge">0 mot</span></div>
+<div class="card-body">
+<textarea id="promptInput" placeholder="Direction artistique : époque, style, palette, références cinéma, grain, ambiance… Ex : « Film noir, Kodak 5219, pellicule granuleuse, Deakins. »" rows="3" spellcheck="false"></textarea>
+<div class="hint">Utilisez ce champ pour la direction visuelle, pas pour raconter l'histoire.</div>
+</div>
+</section>
+
+<button class="btn btn-amber" id="genBtn" disabled style="margin-bottom:1rem;">Ajoutez une clé API + image ou scénario</button>
+<button class="btn btn-red hidden" id="stopBtn" style="margin-bottom:1rem;">⏹ Arrêter</button>
+
+<div class="phase" id="phaseBar">
+<div class="steps">
+<div class="step" data-p="analyze">1 · Analyse</div>
+<div class="step" data-p="plan">2 · Storyboard</div>
+<div class="step" data-p="images">3 · Plans</div>
+<div class="step" data-p="done">4 · Fini</div>
+</div>
+<div class="phase-info"><span id="phaseDetail">En attente</span><span id="phaseEta"></span></div>
+</div>
+
+<div class="queue" id="queue"></div>
+
+<div id="resultsHeader" class="hidden" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;flex-wrap:wrap;gap:.5rem;">
+<div style="font-family:Georgia,serif;font-size:1.05rem;letter-spacing:.15em;text-transform:uppercase;">🎬 Storyboard</div>
+<div id="resultsCount" style="font-size:.72rem;font-family:ui-monospace,monospace;color:#94a3b8;">0 / 0</div>
+</div>
+<div class="grid" id="photoGrid"></div>
+
+</div>
+
+<div class="panel">
+<div class="handle" id="panelHandle">
+<div class="left">
+<span class="toggle" id="panelToggle">▼ CONSOLE</span>
+<span class="latest" id="humanLatest">Prêt.</span>
+</div>
+<div class="actions">
+<button id="copyConsoleBtn">Copier</button>
+<button id="clearConsoleBtn">Effacer</button>
+</div>
+</div>
+<div class="panel-content hidden" id="panelContent">
+<div class="human-log" id="humanLog"></div>
+<div class="debug-log" id="debugLog"></div>
+</div>
+</div>
+
+<div class="toast" id="toast"><span id="toastText">Message</span></div>
+<div class="status-bar" id="statusBar"><div class="spinner"></div><span id="statusText">Préparation…</span></div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════════════════════
+// CONFIG — PROTOCOLE IMAGE INCHANGÉ (NE PAS TOUCHER)
+// ═══════════════════════════════════════════════════════════════
+const API_BASE = 'https://apihub.agnes-ai.com/v1';
+const MODEL_TEXT = 'agnes-2.5-flash';
+const MODEL_IMAGE = 'agnes-image-2.1-flash';
+const IMAGE_SIZE = '1024x1792';        // ← dimensions exactes, pas '1K'
+const CONCURRENCY_PER_KEY = 2;
+const DELAY_PER_KEY_MS = 3400;
+const REF_MAX_SIDE = 1280;
+const KEYS_STORAGE = 'vs_keys_v13';
+const PROMPT_STORAGE = 'vs_prompt_v13';
+const SCENARIO_STORAGE = 'vs_scenario_v13';
+const REF_STORAGE = 'vs_ref_v13';
+const DEBUG_MAX = 400;
+
+// ─── Storyboard ────────────────────────────────────────────────
+const SHOTS_TOTAL = 100;
+const SHOT_CHUNKS = 4;
+const SHOTS_PER_CHUNK = SHOTS_TOTAL / SHOT_CHUNKS; // 25
+
+const CHUNK_PHASES = [
+  { id: 'opening',    label: 'OUVERTURE',           brief: 'Setup, establishing shots, introduction of the world, the protagonist and the starting situation. Slow pace, atmospheric. Include at least 3 decor-only shots and 2 protagonist shots.' },
+  { id: 'development',label: 'DÉVELOPPEMENT',        brief: 'Character interactions, daily life, first signs of conflict, subplots. Mix protagonist with others, others only, details. At least 3 group shots and 2 other-characters-only shots.' },
+  { id: 'complication',label:'COMPLICATION',         brief: 'Rising tension, turning points, emotional peaks, decisive encounters. More close-ups, tighter framing, higher contrast. At least 2 group shots and 3 protagonist shots.' },
+  { id: 'climax',     label: 'CLIMAX & RÉSOLUTION',  brief: 'Confrontation, aftermath, closing images. Climax in the middle, then resolution and final image. Include at least 2 decor-only shots (empty spaces after the storm) and 1 detail shot as closing.' }
+];
+
+// ─── Types de plan (pour badges) ───────────────────────────────
+const SHOT_TYPE_META = {
+  decor:    { badge: 'dec', label: 'Décor' },
+  heros:    { badge: 'ref', label: 'Protagoniste' },
+  groupe:   { badge: 'hg',  label: 'Protagoniste + autres' },
+  autres:   { badge: 'oth', label: 'Personnages secondaires' },
+  detail:   { badge: 'det', label: 'Détail' }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+const state = {
+  apiKeys: [],
+  refImage: null,
+  refName: null,
+  scenario: '',
+  userPrompt: '',
+  world: null,
+  story: null,
+  plan: [],
+  isRunning: false,
+  isAnalyzing: false,
+  stopRequested: false,
+  completed: 0,
+  total: 0,
+  startTime: 0,
+  keyIndex: 0,
+  humanLog: [],
+  debugLog: []
+};
+
+// ═══════════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const nowTime = () => new Date().toLocaleTimeString('fr-FR', { hour12: false });
+
+function human(msg) {
+  state.humanLog.push({ t: nowTime(), m: msg });
+  if (state.humanLog.length > 80) state.humanLog.shift();
+  const el = $('humanLatest'); if (el) el.textContent = msg;
+  renderHuman();
+}
+function renderHuman() {
+  const el = $('humanLog'); if (!el) return;
+  el.innerHTML = state.humanLog.slice(-30).map(e => '<div><span class="t">' + e.t + '</span> <span class="m">' + esc(e.m) + '</span></div>').join('');
+  el.scrollTop = el.scrollHeight;
+}
+function debug(msg, level = 'info') {
+  state.debugLog.push({ t: nowTime(), m: msg, c: level });
+  if (state.debugLog.length > DEBUG_MAX) state.debugLog.shift();
+  renderDebug();
+}
+function renderDebug() {
+  const el = $('debugLog'); if (!el) return;
+  el.innerHTML = state.debugLog.slice(-200).map(e => '<div><span class="t">' + e.t + '</span> <span class="' + e.c + '">' + esc(e.m) + '</span></div>').join('');
+  el.scrollTop = el.scrollHeight;
+}
+function toast(msg, type = 'success', dur = 2500) {
+  const t = $('toast');
+  t.className = 'toast ' + type + ' visible';
+  $('toastText').textContent = msg;
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => { t.className = 'toast ' + type; }, dur);
+}
+function setStatus(txt) {
+  const b = $('statusBar');
+  if (txt) { b.classList.add('visible'); $('statusText').textContent = txt; }
+  else b.classList.remove('visible');
+}
+function setPhase(phase, detail, eta) {
+  const order = ['analyze', 'plan', 'images', 'done'];
+  const idx = order.indexOf(phase);
+  document.querySelectorAll('.step').forEach(el => {
+    const i = order.indexOf(el.dataset.p);
+    el.className = 'step' + (i < idx ? ' done' : i === idx ? ' active' : '');
+  });
+  if (detail !== undefined) $('phaseDetail').textContent = detail || '';
+  if (eta !== undefined) $('phaseEta').textContent = eta || '';
+}
+function fmtEta(s) { if (s < 0 || !isFinite(s)) return ''; return s < 60 ? Math.round(s) + 's' : Math.floor(s / 60) + 'm ' + Math.round(s % 60) + 's'; }
+function sanitize(t) { return String(t == null ? '' : t).replace(/[\u2018\u2019\u201B\u2032\u02BC]/g, "'").replace(/[\u201C\u201D\u201F\u2033]/g, '"').replace(/\u2013|\u2014/g, '-').replace(/\u2026/g, '...').replace(/[\u200B-\u200D\uFEFF]/g, '').replace(/\u00A0|\u202F/g, ' '); }
+function trunc(t, n) { if (!t) return ''; const s = String(t).replace(/\s+/g, ' ').trim(); return s.length <= n ? s : s.slice(0, n - 1) + '…'; }
+
+// ═══════════════════════════════════════════════════════════════
+// STOCKAGE
+// ═══════════════════════════════════════════════════════════════
+const _mem = {};
+let _lsOk = false, _ssOk = false;
+try { localStorage.setItem('__t', '1'); localStorage.removeItem('__t'); _lsOk = true; } catch (e) {}
+try { sessionStorage.setItem('__t', '1'); sessionStorage.removeItem('__t'); _ssOk = true; } catch (e) {}
+const STORAGE_OK = _lsOk || _ssOk;
+function storageGet(k) {
+  if (_lsOk) { try { const v = localStorage.getItem(k); if (v !== null) return v; } catch (e) {} }
+  if (_ssOk) { try { const v = sessionStorage.getItem(k); if (v !== null) return v; } catch (e) {} }
+  return Object.prototype.hasOwnProperty.call(_mem, k) ? _mem[k] : null;
+}
+function storageSet(k, v) {
+  _mem[k] = String(v); let ok = false;
+  if (_lsOk) { try { localStorage.setItem(k, v); ok = true; } catch (e) {} }
+  if (_ssOk) { try { sessionStorage.setItem(k, v); ok = true; } catch (e) {} }
+  return ok;
+}
+function storageDel(k) {
+  delete _mem[k];
+  if (_lsOk) { try { localStorage.removeItem(k); } catch (e) {} }
+  if (_ssOk) { try { sessionStorage.removeItem(k); } catch (e) {} }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CLÉS API
+// ═══════════════════════════════════════════════════════════════
+function getStoredKeys() {
+  const raw = storageGet(KEYS_STORAGE); if (!raw) return [];
+  try { const a = JSON.parse(raw); return Array.isArray(a) ? a.filter(k => typeof k === 'string' && k.trim()) : []; } catch (e) { return []; }
+}
+function isValidKeyFormat(k) { return typeof k === 'string' && k.startsWith('sk-') && k.length >= 15 && k.length <= 200; }
+async function quickPing(key) {
+  try {
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 4000);
+    const res = await fetch(API_BASE + '/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: MODEL_TEXT, messages: [{ role: 'user', content: 'ok' }], max_tokens: 1 }),
+      signal: controller.signal
+    });
+    clearTimeout(tid);
+    return res.status !== 401 && res.status !== 403;
+  } catch (e) { return null; }
+}
+async function validateAndSaveKeys() {
+  const raw = $('keysInput').value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  if (raw.length === 0) { toast('Aucune clé à valider', 'error'); return; }
+  $('validateBtn').disabled = true;
+  $('validateBtn').textContent = '⏳ Validation…';
+  human('🔐 Validation de ' + raw.length + ' clé(s)…');
+  const valid = [];
+  for (let i = 0; i < raw.length; i++) {
+    const k = raw[i];
+    if (!isValidKeyFormat(k)) { debug('Clé ' + (i + 1) + ' : format invalide', 'err'); human('❌ Clé ' + (i + 1) + ' : format invalide'); continue; }
+    const ping = await quickPing(k);
+    if (ping === false) { debug('Clé ' + (i + 1) + ' : refusée (401/403)', 'err'); human('❌ Clé ' + (i + 1) + ' : refusée'); continue; }
+    valid.push(k);
+    debug('Clé ' + (i + 1) + ' : OK' + (ping === null ? ' (offline, conservée)' : ''), 'ok');
+    human('✅ Clé ' + (i + 1) + ' valide');
+  }
+  state.apiKeys = valid;
+  try { storageSet(KEYS_STORAGE, JSON.stringify(valid)); } catch (e) {}
+  const st = $('keyStatus');
+  if (valid.length > 0) { st.className = 'status-line ok'; $('keyStatusText').textContent = valid.length + ' clé(s) enregistrée(s) · rotation auto'; }
+  else { st.className = 'status-line err'; $('keyStatusText').textContent = 'Aucune clé valide'; }
+  $('validateBtn').disabled = false;
+  $('validateBtn').textContent = '🔐 Valider et enregistrer';
+  updateKeyBadge();
+  toast(valid.length + ' clé(s) enregistrée(s)', valid.length > 0 ? 'success' : 'error', 3500);
+}
+function getKey() {
+  if (state.apiKeys.length === 0) return '';
+  const k = state.apiKeys[state.keyIndex % state.apiKeys.length];
+  state.keyIndex++;
+  return k;
+}
+function updateKeyBadge() {
+  $('keyBadge').textContent = state.apiKeys.length + ' validée' + (state.apiKeys.length > 1 ? 's' : '');
+  updateGenBtn();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// IMAGE DE RÉFÉRENCE
+// ═══════════════════════════════════════════════════════════════
+function compressImg(dataUrl, maxSide) {
+  maxSide = maxSide || REF_MAX_SIDE;
+  return new Promise(res => {
+    const img = new Image();
+    img.onload = () => {
+      let { width: w, height: h } = img;
+      const s = Math.min(1, maxSide / Math.max(w, h));
+      w = Math.max(1, Math.round(w * s)); h = Math.max(1, Math.round(h * s));
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const x = c.getContext('2d');
+      x.fillStyle = '#fff'; x.fillRect(0, 0, w, h);
+      x.drawImage(img, 0, 0, w, h);
+      let url = c.toDataURL('image/jpeg', 0.88);
+      let q = 0.88;
+      while (url.length > 1.5 * 1024 * 1024 && q > 0.5) { q -= 0.1; url = c.toDataURL('image/jpeg', q); }
+      res(url);
+    };
+    img.onerror = () => res(dataUrl);
+    img.src = dataUrl;
+  });
+}
+async function handleRefFile(f) {
+  if (!f) return;
+  if (!f.type.startsWith('image/')) { toast('Ce fichier n\'est pas une image', 'error'); return; }
+  if (f.size > 30 * 1024 * 1024) { toast('Image trop lourde (max 30 Mo)', 'error'); return; }
+  setStatus('Chargement de l\'image…');
+  try {
+    const dataUrl = await new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = e => res(e.target.result);
+      r.onerror = rej;
+      r.readAsDataURL(f);
+    });
+    const compressed = await compressImg(dataUrl);
+    state.refImage = compressed;
+    state.refName = f.name;
+    state.world = null;
+    state.story = null;
+    try { storageSet(REF_STORAGE, JSON.stringify({ img: compressed, name: f.name })); } catch (e) {}
+    refreshRefPanel();
+    human('📷 Image chargée : ' + f.name + ' (' + Math.round(compressed.length / 1024) + ' Ko)');
+    toast('Image chargée', 'success');
+  } catch (e) {
+    debug('Erreur chargement image : ' + e.message, 'err');
+    toast('Chargement impossible', 'error');
+  }
+  setStatus(null);
+}
+function refreshRefPanel() {
+  const prev = $('refPreview'), img = $('refPreviewImg'), name = $('refPreviewName');
+  const btnAnalyze = $('analyzeBtn');
+  const badge = $('refBadge');
+  const has = !!state.refImage;
+  if (has) { img.src = state.refImage; name.textContent = state.refName || 'référence'; prev.classList.remove('hidden'); }
+  else { img.removeAttribute('src'); prev.classList.add('hidden'); }
+  badge.textContent = has ? '1 image' : '0 image';
+  if (btnAnalyze) {
+    btnAnalyze.disabled = !has || state.isAnalyzing;
+    btnAnalyze.textContent = state.isAnalyzing ? 'Analyse…' : "Analyser";
+  }
+  renderAnalysisBox();
+  renderStoryBox();
+  updateGenBtn();
+}
+function removeRef() {
+  state.refImage = null; state.refName = null;
+  storageDel(REF_STORAGE);
+  refreshRefPanel();
+  $('refInput').value = '';
+  toast('Image retirée', 'warn');
+}
+function renderAnalysisBox() {
+  const el = $('analysisBox');
+  if (!state.world) { el.classList.remove('visible'); el.innerHTML = ''; return; }
+  const a = state.world;
+  el.innerHTML =
+    '<span class="k">▸ PALETTE</span> ' + esc(a.palette_label || '') + '\n' +
+    '<span class="k">▸ MÉDIUM</span> ' + esc(a.medium || '') + '\n' +
+    (a.face_dna ? '<span class="k">▸ VISAGE</span> ' + esc(trunc(a.face_dna, 400)) + '\n' : '') +
+    (a.context ? '<span class="k">▸ CONTEXTE</span> ' + esc(a.context) + '\n' : '') +
+    (a.mood ? '<span class="k">▸ AMBIANCE</span> ' + esc(a.mood) + '\n' : '') +
+    (a.style_summary ? '<span class="k">▸ STYLE</span> ' + esc(a.style_summary) : '');
+  el.classList.add('visible');
+}
+function renderStoryBox() {
+  const el = $('storyBox');
+  const s = state.story;
+  if (!s) { el.classList.remove('visible'); el.innerHTML = ''; return; }
+  let html = '<div class="story-title">🎬 ' + esc(s.title || 'Sans titre') + '</div>';
+  if (s.logline) html += '<div class="story-logline">' + esc(s.logline) + '</div>';
+  if (s.characters && s.characters.length) {
+    html += '<div class="story-section"><span class="k">Personnages</span><ul>';
+    s.characters.forEach(c => {
+      const role = (c.role || '').toLowerCase();
+      const isMain = /protagon|principal|hero|héros/.test(role);
+      html += '<li><strong>' + esc(c.name || '?') + '</strong> <em>(' + esc(c.role || '') + ')</em> — ' + esc(trunc(c.description || '', 160)) + (isMain ? '' : '') + '</li>';
+    });
+    html += '</ul></div>';
+  }
+  if (s.locations && s.locations.length) {
+    html += '<div class="story-section"><span class="k">Lieux</span>' + s.locations.map(l => esc(l)).join(' · ') + '</div>';
+  }
+  if (s.arc && s.arc.length) {
+    html += '<div class="story-section"><span class="k">Arc narratif</span><ol>';
+    s.arc.forEach(b => { html += '<li>' + esc(b) + '</li>'; });
+    html += '</ol></div>';
+  }
+  el.innerHTML = html;
+  el.classList.add('visible');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PROMPTS UI
+// ═══════════════════════════════════════════════════════════════
+function updatePromptBadge() {
+  const v = $('promptInput').value || '';
+  const words = v.trim() ? v.trim().split(/\s+/).length : 0;
+  $('promptBadge').textContent = words + ' mot' + (words > 1 ? 's' : '');
+  state.userPrompt = v;
+  try { storageSet(PROMPT_STORAGE, v); } catch (e) {}
+  updateGenBtn();
+}
+function updateScenarioBadge() {
+  const v = $('scenarioInput').value || '';
+  const words = v.trim() ? v.trim().split(/\s+/).length : 0;
+  $('scenarioBadge').textContent = words + ' mot' + (words > 1 ? 's' : '');
+  state.scenario = v;
+  try { storageSet(SCENARIO_STORAGE, v); } catch (e) {}
+  updateGenBtn();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BOUTON GENERER
+// ═══════════════════════════════════════════════════════════════
+function updateGenBtn() {
+  const btn = $('genBtn');
+  const hasInput = state.refImage || (state.scenario || '').trim() || (state.userPrompt || '').trim();
+  const ok = state.apiKeys.length > 0 && hasInput && !state.isRunning;
+  btn.disabled = !ok;
+  if (state.isRunning) btn.textContent = 'Génération en cours…';
+  else if (state.apiKeys.length === 0) btn.textContent = 'Ajoutez une clé API';
+  else if (!hasInput) btn.textContent = 'Ajoutez une image ou un scénario';
+  else btn.textContent = '▸ Générer le storyboard (100 plans)';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// API — IMAGE (TEXT-TO-IMAGE PUR — NE PAS TOUCHER)
+// ═══════════════════════════════════════════════════════════════
+async function apiImage(prompt) {
+  const key = getKey();
+  if (!key) throw new Error('Aucune clé API');
+  for (let attempt = 0; attempt < 5; attempt++) {
+    if (state.stopRequested) throw new Error('Arrêt');
+    try {
+      const body = {
+        model: MODEL_IMAGE,
+        prompt: sanitize(prompt),
+        n: 1,
+        size: IMAGE_SIZE,
+        response_format: 'url'
+      };
+      const res = await fetch(API_BASE + '/images/generations', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      debug('IMG HTTP ' + res.status, res.ok ? 'ok' : 'warn');
+      if (res.status === 429) { await sleep([10, 20, 35, 50, 75][attempt] * 1000); continue; }
+      if (res.status === 503) { await sleep([8, 15, 30, 45, 60][attempt] * 1000); continue; }
+      if (!res.ok) { const err = await res.text(); debug('HTTP ' + res.status + ' · ' + err.slice(0, 200), 'err'); throw new Error('HTTP ' + res.status); }
+      const data = await res.json();
+      const item = data.data && data.data[0];
+      if (item && item.url) return item.url;
+      if (item && item.b64_json) return 'data:image/png;base64,' + item.b64_json;
+      throw new Error('Réponse invalide');
+    } catch (e) {
+      if (e.message === 'Arrêt') throw e;
+      if (attempt === 4) throw e;
+      await sleep([5, 10, 20, 35][attempt] * 1000);
+    }
+  }
+  throw new Error('Échec après 5 tentatives');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// API — CHAT & VISION
+// ═══════════════════════════════════════════════════════════════
+async function apiChat(system, user, label, maxTokens, temp) {
+  const key = getKey();
+  if (!key) throw new Error('Aucune clé API');
+  const body = {
+    model: MODEL_TEXT,
+    messages: [
+      { role: 'system', content: sanitize(system) },
+      { role: 'user', content: sanitize(user) }
+    ],
+    temperature: temp !== undefined ? temp : 0.7,
+    max_tokens: maxTokens || 8000
+  };
+  const res = await fetch(API_BASE + '/chat/completions', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  debug('CHAT ' + label + ' HTTP ' + res.status, res.ok ? 'ok' : 'err');
+  if (!res.ok) { const t = await res.text(); throw new Error('HTTP ' + res.status + ' ' + t.slice(0, 120)); }
+  const d = await res.json();
+  const ch = d.choices && d.choices[0];
+  return (ch && ch.message && (ch.message.content || ch.message.reasoning_content)) || null;
+}
+async function apiVision(system, user, img, label, maxTokens, temp) {
+  const key = getKey();
+  if (!key) throw new Error('Aucune clé API');
+  const body = {
+    model: MODEL_TEXT,
+    messages: [
+      { role: 'system', content: sanitize(system) },
+      { role: 'user', content: [
+        { type: 'text', text: sanitize(user) },
+        { type: 'image_url', image_url: { url: img } }
+      ] }
+    ],
+    temperature: temp !== undefined ? temp : 0.3,
+    max_tokens: maxTokens || 2500
+  };
+  const res = await fetch(API_BASE + '/chat/completions', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  debug('VISION ' + label + ' HTTP ' + res.status, res.ok ? 'ok' : 'err');
+  if (!res.ok) { const t = await res.text(); throw new Error('HTTP ' + res.status + ' ' + t.slice(0, 120)); }
+  const d = await res.json();
+  const ch = d.choices && d.choices[0];
+  return (ch && ch.message && (ch.message.content || ch.message.reasoning_content)) || null;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// JSON ROBUSTE
+// ═══════════════════════════════════════════════════════════════
+function repairJson(text) {
+  if (!text) return null;
+  let c = String(text).trim();
+  const fm = c.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fm) c = fm[1].trim();
+  const fb = c.indexOf('{');
+  if (fb < 0) return null;
+  c = c.slice(fb);
+  const lb = c.lastIndexOf('}');
+  if (lb > 0) c = c.slice(0, lb + 1);
+  let out = '', inS = false, esc2 = false;
+  for (let i = 0; i < c.length; i++) {
+    const ch = c[i];
+    if (esc2) { if ('"\\/bfnrtu'.includes(ch)) { out += '\\' + ch; } else out += ch; esc2 = false; continue; }
+    if (ch === '\\') { esc2 = true; continue; }
+    if (ch === '"') { inS = !inS; out += ch; continue; }
+    if (inS) {
+      if (ch === '\n') out += '\\n';
+      else if (ch === '\r') out += '\\r';
+      else if (ch === '\t') out += '\\t';
+      else if (ch.charCodeAt(0) < 32) out += '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0');
+      else out += ch;
+      continue;
+    }
+    out += ch;
+  }
+  if (esc2) out += '\\';
+  if (inS) out += '"';
+  out = out.replace(/,\s*([}\]])/g, '$1');
+  return out;
+}
+function extractJson(text) {
+  const r = repairJson(text);
+  if (!r) return null;
+  try { return JSON.parse(r); } catch (e1) {
+    try {
+      let ob = 0, ok = 0, inS = false, es = false;
+      const t = r;
+      for (let i = 0; i < t.length; i++) {
+        const ch = t[i];
+        if (es) { es = false; continue; }
+        if (ch === '\\') { es = true; continue; }
+        if (ch === '"') { inS = !inS; continue; }
+        if (inS) continue;
+        if (ch === '{') ob++; else if (ch === '}') ob--;
+        else if (ch === '[') ok++; else if (ch === ']') ok--;
+      }
+      let b = t;
+      if (inS) b += '"';
+      while (ok-- > 0) b += ']';
+      while (ob-- > 0) b += '}';
+      return JSON.parse(b);
+    } catch (e2) { debug('PARSE : ' + e2.message, 'warn'); return null; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SYSTÈME ARTISTIQUE
+// ═══════════════════════════════════════════════════════════════
+const SYS_ART = [
+  'You are a world-class film director, screenwriter and cinematographer.',
+  'You prepare a 100-shot cinematic storyboard: each image will be the FIRST FRAME of a shot in a real film, later animated by an AI video generator (Google Flow / Veo).',
+  'EVERY image must look like a REAL PHOTOGRAPH shot on film by a master.',
+  'FORBIDDEN: 3D render, CGI, digital illustration, cartoon, anime, drawing, vector art, plastic look.',
+  'Output ONLY valid JSON. No markdown. No code fences. Straight apostrophes inside strings.'
+].join(' ');
+
+// ═══════════════════════════════════════════════════════════════
+// ANALYSE — image (option) + scénario → monde + histoire
+// ═══════════════════════════════════════════════════════════════
+async function analyzeScene(dataUrl, scenario, userPrompt) {
+  const commonTail = [
+    '',
+    'Return ONLY this exact JSON:',
+    '{',
+    '"medium":"english photographic medium (film stock, camera, era)",',
+    '"palette":["#hex","#hex","#hex","#hex","#hex","#hex"],',
+    '"palette_label":"français court",',
+    '"lighting":"english lighting description",',
+    '"texture":"english film texture, grain, stock",',
+    '"mood":"english mood",',
+    '"face_dna":"EXTREMELY DETAILED ENGLISH — a forensic portrait of the PROTAGONIST: gender, apparent age, ethnicity, exact skin tone, face shape, cheekbones, jaw, chin, forehead, eyebrow shape/color, eye shape/color, iris, eyelashes, nose shape/size, nostril form, mouth shape, lips, natural lip color, teeth, ears, hair color/texture/length, hairstyle, hairline, facial hair, distinctive features (mole, scar, dimple, freckles), typical expression. 80-140 words.",',
+    '"body_dna":"ENGLISH — height impression, build, shoulders, posture, hands. 30-50 words.",',
+    '"outfit":"ENGLISH — the protagonist\'s base outfit (color, fabric, style). 25-45 words.",',
+    '"has_face":true,',
+    '"context":"english inferred setting, era, activity",',
+    '"story":{',
+    '  "title":"french film title (short, evocative)",',
+    '  "logline":"french one-sentence logline",',
+    '  "characters":[',
+    '    {"name":"protagonist first name (french)","role":"protagoniste","description":"english brief (age, look, role)"},',
+    '    {"name":"secondary first name","role":"secondaire","description":"english brief"},',
+    '    {"name":"...","role":"secondaire","description":"..."},',
+    '    {"name":"...","role":"secondaire","description":"..."}',
+    '  ],',
+    '  "locations":["english location 1","english location 2","english location 3","english location 4","english location 5"],',
+    '  "arc":["english beat 1","english beat 2","english beat 3","english beat 4","english beat 5","english beat 6"]',
+    '},',
+    '"style_summary":"ENGLISH paragraph (6-8 sentences) describing the exact visual style to reproduce across ALL 100 shots (medium, palette, lighting, texture, mood, film stock, framing approach)"',
+    '}'
+  ];
+
+  if (dataUrl) {
+    const usr = [
+      'MISSION: prepare a 100-shot cinematic storyboard for AI video generation.',
+      'Each of the 100 images will be the FIRST FRAME of a shot in the film.',
+      '',
+      '════════ SCENARIO ════════',
+      scenario ? scenario.slice(0, 3500) : '(no scenario provided — invent a coherent cinematic story from the reference image)',
+      '══════════════════════════',
+      '',
+      userPrompt ? ('ART DIRECTION: "' + userPrompt.slice(0, 700) + '"') : '',
+      '',
+      'A reference image of the PROTAGONIST is provided below.',
+      'Priority 1: describe the FACE with forensic precision so ANY text-to-image AI can recreate THE SAME FACE without ever seeing the image.',
+      'Priority 2: build the visual world (medium, palette, lighting, texture, mood) matching the reference.',
+      'Priority 3: build the story structure — characters (4 to 6 total, including the protagonist), 5 locations, and a 6-beat narrative arc that follows the scenario.',
+      ''
+    ].filter(Boolean).join('\n') + '\n' + commonTail.join('\n');
+    const c = await apiVision(SYS_ART, usr, dataUrl, 'Analyse image+scénario', 4200, 0.35);
+    const p = extractJson(c);
+    if (!p) throw new Error('Analyse impossible');
+    return normalizeWorld(p);
+  } else {
+    const usr = [
+      'MISSION: prepare a 100-shot cinematic storyboard for AI video generation.',
+      'No reference image. Invent the protagonist and describe their FACE with forensic precision so any text-to-image AI can recreate them consistently across 100 shots.',
+      '',
+      '════════ SCENARIO ════════',
+      scenario.slice(0, 3500),
+      '══════════════════════════',
+      '',
+      userPrompt ? ('ART DIRECTION: "' + userPrompt.slice(0, 700) + '"') : '',
+      'Priority: build the visual world, the character cast (protagonist + 3-5 secondaries), 5 locations, and a 6-beat narrative arc that follows the scenario.',
+      ''
+    ].filter(Boolean).join('\n') + '\n' + commonTail.join('\n');
+    const c = await apiChat(SYS_ART, usr, 'Analyse scénario', 4200, 0.5);
+    const p = extractJson(c);
+    if (!p) throw new Error('Analyse impossible');
+    return normalizeWorld(p);
+  }
+}
+
+function normalizeWorld(p) {
+  const w = {
+    medium: (p.medium || '35mm film photography').trim(),
+    palette: Array.isArray(p.palette) ? p.palette.filter(h => /^#[0-9a-f]{3,8}$/i.test(h)).slice(0, 8) : ['#888', '#ccc', '#222', '#eee', '#555'],
+    palette_label: (p.palette_label || '').trim(),
+    lighting: (p.lighting || '').trim(),
+    texture: (p.texture || '').trim(),
+    mood: (p.mood || '').trim(),
+    face_dna: (p.face_dna || '').trim(),
+    body_dna: (p.body_dna || '').trim(),
+    outfit: (p.outfit || '').trim(),
+    has_face: p.has_face !== false,
+    context: (p.context || '').trim(),
+    style_summary: (p.style_summary || '').trim()
+  };
+  const st = p.story || {};
+  state.story = {
+    title: (st.title || 'Sans titre').toString().trim(),
+    logline: (st.logline || '').toString().trim(),
+    characters: Array.isArray(st.characters) ? st.characters.slice(0, 8).map(c => ({
+      name: (c && c.name ? String(c.name) : '').slice(0, 40),
+      role: (c && c.role ? String(c.role) : 'secondaire').slice(0, 30),
+      description: (c && c.description ? String(c.description) : '').slice(0, 300)
+    })) : [],
+    locations: Array.isArray(st.locations) ? st.locations.slice(0, 8).map(String) : [],
+    arc: Array.isArray(st.arc) ? st.arc.slice(0, 8).map(String) : []
+  };
+  return w;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BLOCS DE PROMPT — VERROU PERSONNAGE, STYLE, RÈGLES
+// ═══════════════════════════════════════════════════════════════
+function charLockBlock() {
+  const a = state.world; if (!a) return '';
+  if (!a.face_dna) return '';
+  const lines = [
+    '═══ LOCKED PROTAGONIST — THE SAME PERSON MUST APPEAR EXACTLY LIKE THIS ═══',
+    'FACE (identical, do not alter any feature): ' + a.face_dna
+  ];
+  if (a.body_dna) lines.push('BODY: ' + a.body_dna);
+  lines.push('RECOGNIZABLE and CONSISTENT — same person across the whole film.');
+  lines.push('═══════════════════════════════════════════════════════════════════════');
+  return lines.join('\n');
+}
+function styleBlock() {
+  const a = state.world;
+  if (!a) return 'STYLE: cinematic photograph, film grain, natural lighting.';
+  const parts = ['VISUAL STYLE — follow EXACTLY:'];
+  if (a.medium) parts.push('MEDIUM: ' + a.medium);
+  if (a.palette.length) parts.push('COLORS: ' + a.palette.join(', '));
+  if (a.lighting) parts.push('LIGHTING: ' + a.lighting);
+  if (a.texture) parts.push('TEXTURE: ' + a.texture);
+  if (a.mood) parts.push('MOOD: ' + a.mood);
+  if (a.style_summary) parts.push('STYLE SUMMARY: ' + a.style_summary);
+  return parts.join('\n');
+}
+function hardLock() {
+  return [
+    'ABSOLUTE RULES:',
+    '- Real photograph shot on film, first frame of a shot in a real film.',
+    '- FORBIDDEN: 3D render, CGI, digital illustration, cartoon, anime, drawing, vector art, plastic look, hyper-clean digital.',
+    '- Real film grain, real depth of field, natural color science, subtle imperfection.',
+    '- Vertical 9:16 composition, cinematic framing.',
+    '- NO text, NO watermark, NO logo, NO caption in the image.'
+  ].join('\n');
+}
+function storyContextHeader() {
+  const s = state.story, a = state.world;
+  const lines = [
+    'FILM: ' + (s && s.title ? s.title : '(untitled)'),
+    'LOGLINE: ' + (s && s.logline ? s.logline : ''),
+    'MEDIUM: ' + (a && a.medium ? a.medium : '35mm film'),
+    'CONTEXT: ' + (a && a.context ? a.context : ''),
+    'LOCATIONS: ' + (s && s.locations ? s.locations.join(' | ') : ''),
+    'NARRATIVE ARC: ' + (s && s.arc ? s.arc.join(' → ') : '')
+  ];
+  if (s && s.characters && s.characters.length) {
+    lines.push('CAST:');
+    s.characters.forEach(c => {
+      lines.push('  - ' + c.name + ' (' + c.role + ') : ' + c.description);
+    });
+  }
+  return lines.filter(x => x !== '').join('\n');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STORYBOARD — génération en 4 chunks séquentiels
+// ═══════════════════════════════════════════════════════════════
+function summarizeShots(items) {
+  if (!items.length) return '(none yet)';
+  return items.map(it => '#' + it._n + ' [' + it.type + '] ' + (it.beat || it.label || '')).join('\n');
+}
+
+async function genShotChunk(chunkIdx, previousSummary) {
+  const phase = CHUNK_PHASES[chunkIdx];
+  const startN = chunkIdx * SHOTS_PER_CHUNK + 1;
+  const endN = (chunkIdx + 1) * SHOTS_PER_CHUNK;
+  const s = state.story;
+
+  const usr = [
+    'You are the director building a 100-shot storyboard for a film.',
+    'Each shot is the FIRST FRAME of a shot — animated later by Google Flow.',
+    '',
+    '════════ STORY CONTEXT ════════',
+    storyContextHeader(),
+    '════════════════════════════════',
+    '',
+    'PROTAGONIST FACE DNA (must remain identical in every shot where the protagonist appears):',
+    state.world.face_dna || '(no face)',
+    '',
+    '════════ PREVIOUS SHOTS (already used — do NOT repeat them) ════════',
+    previousSummary || '(none — this is the opening)',
+    '══════════════════════════════════════════════════════════════════════',
+    '',
+    'YOUR TASK — write EXACTLY ' + SHOTS_PER_CHUNK + ' shots, positions #' + startN + ' to #' + endN + ' of 100.',
+    'PHASE OF THE FILM: ' + phase.label,
+    'DIRECTION: ' + phase.brief,
+    '',
+    '════════ HARD RULES ════════',
+    '- MANDATORY VARIETY across the ' + SHOTS_PER_CHUNK + ' shots — mix ALL these shot types:',
+    '   • "decor"  : empty location, NO people, environment only',
+    '   • "heros"  : the protagonist ALONE (same face, new pose/outfit/location)',
+    '   • "groupe" : the protagonist WITH 1 to 4 other characters (interaction)',
+    '   • "autres" : OTHER CHARACTERS ONLY — no protagonist (secondary characters living their lives)',
+    '   • "detail" : close-up on a PROP / object / texture — NO face',
+    '- Do NOT repeat the same composition, pose, setting or subject two shots in a row.',
+    '- The protagonists count should roughly match the flow: opening = more decors; middle = more groups/others; climax = more close-ups of the protagonist.',
+    '- The protagonist face description MUST be repeated inside every "heros" and "groupe" prompt (same person, different scenes).',
+    '- Continuity: same world, same era, same film style, same palette across the ' + SHOTS_PER_CHUNK + ' shots.',
+    '- Language of a master cinematographer (lens, aperture, film stock, framing).',
+    '- 50-80 ENGLISH words per prompt.',
+    '',
+    'For EACH shot also write:',
+    '- "label"       : 2-4 French words (e.g. "Rue déserte" / "Rencontre au bar")',
+    '- "type"        : one of "decor" | "heros" | "groupe" | "autres" | "detail"',
+    '- "beat"        : 1 short French phrase describing the narrative beat',
+    '- "prompt"      : the ENGLISH image prompt (50-80 words)',
+    '- "videoPrompt" : ENGLISH prompt for Google Flow (Veo) — subject + action + camera movement + lighting + mood + "Duration 5 seconds. Vertical 9:16." — 55-75 words',
+    '',
+    'Return ONLY:',
+    '{"items":[{"label":"...","type":"...","beat":"...","prompt":"...","videoPrompt":"..."}]}',
+    'with EXACTLY ' + SHOTS_PER_CHUNK + ' items in order.'
+  ].filter(Boolean).join('\n');
+
+  const c = await apiChat(SYS_ART + ' You write shot-by-shot storyboards.', usr, 'Chunk ' + phase.label, 12000, 0.85);
+  const p = extractJson(c);
+  const arr = (p && Array.isArray(p.items)) ? p.items : [];
+  const out = [];
+  for (let i = 0; i < SHOTS_PER_CHUNK; i++) {
+    const it = arr[i] || {};
+    const type = ['decor','heros','groupe','autres','detail'].includes(it.type) ? it.type : 'heros';
+    out.push({
+      _n: startN + i,
+      type: type,
+      label: String(it.label || '').slice(0, 60) || ('Plan ' + (startN + i)),
+      beat: String(it.beat || '').slice(0, 160),
+      prompt: String(it.prompt || '').trim() || ('Cinematic photograph, phase ' + phase.label + ', film grain, master composition.'),
+      videoPrompt: String(it.videoPrompt || '').trim()
+    });
+  }
+  return out;
+}
+
+async function buildStoryboard() {
+  setPhase('plan', '🎬 Écriture du storyboard…', '');
+  setStatus('Écriture du storyboard…');
+  human('🎬 Écriture du storyboard (4 actes)…');
+
+  const allItems = [];
+  let previousSummary = '';
+  for (let c = 0; c < SHOT_CHUNKS; c++) {
+    if (state.stopRequested) throw new Error('Arrêt');
+    const phase = CHUNK_PHASES[c];
+    setPhase('plan', '🎬 Acte ' + (c + 1) + '/4 · ' + phase.label + '…', '');
+    debug('Storyboard chunk ' + (c + 1) + '/4 · ' + phase.label, 'api');
+    try {
+      const items = await genShotChunk(c, previousSummary);
+      allItems.push(...items);
+      previousSummary = summarizeShots(items);
+      human('✍️ ' + phase.label + ' écrit (' + items.length + ' plans)');
+    } catch (e) {
+      debug('Chunk ' + (c + 1) + ' échec : ' + e.message, 'err');
+      // fallback générique
+      for (let i = 0; i < SHOTS_PER_CHUNK; i++) {
+        const n = c * SHOTS_PER_CHUNK + 1 + i;
+        allItems.push({
+          _n: n, type: 'heros',
+          label: 'Plan ' + n,
+          beat: phase.label,
+          prompt: 'Cinematic photograph, ' + (state.world.medium || '35mm film') + ', natural light, film grain, master composition, ' + (state.world.context || '') + '.',
+          videoPrompt: 'Cinematic slow camera move on a quiet moment, natural lighting, film grain, moody atmosphere. Duration 5 seconds. Vertical 9:16.'
+        });
+      }
+    }
+  }
+
+  // Construire le plan final avec injection charLock / style / hardLock
+  const plan = allItems.slice(0, SHOTS_TOTAL).map((it, i) => {
+    const hasHero = it.type === 'heros' || it.type === 'groupe';
+    const parts = [it.prompt];
+    if (hasHero) parts.push('', charLockBlock());
+    parts.push('', '---', styleBlock(), '', hardLock());
+    const fullPrompt = parts.filter(Boolean).join('\n');
+    return {
+      index: i + 1,
+      kind: it.type,
+      label: it.label,
+      beat: it.beat,
+      prompt: it.prompt,
+      videoPrompt: it.videoPrompt,
+      fullPrompt: fullPrompt,
+      hasHero: hasHero,
+      status: 'pending',
+      url: null,
+      error: null
+    };
+  });
+
+  // Compléter si < 100
+  while (plan.length < SHOTS_TOTAL) {
+    const n = plan.length + 1;
+    const it = {
+      index: n, kind: 'heros', label: 'Plan ' + n, beat: 'Variation',
+      prompt: 'Cinematic photograph, film grain, master composition, ' + (state.world.context || '') + '.',
+      videoPrompt: 'Cinematic slow camera move, natural lighting, film grain. Duration 5 seconds. Vertical 9:16.',
+      hasHero: true
+    };
+    it.fullPrompt = [it.prompt, '', charLockBlock(), '', '---', styleBlock(), '', hardLock()].filter(Boolean).join('\n');
+    it.status = 'pending'; it.url = null; it.error = null;
+    plan.push(it);
+  }
+
+  state.plan = plan;
+  return plan;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PROMPT VIDÉO GOOGLE FLOW
+// ═══════════════════════════════════════════════════════════════
+function buildVideoPrompt(photo) {
+  const vp = photo.videoPrompt;
+  if (vp && vp.length > 40) return vp + (vp.includes('9:16') ? '' : ' Duration 5 seconds. Vertical 9:16.');
+  return 'Subject: ' + photo.label + '. Action: slow subtle movement, breathing, gentle camera push. Camera: static tripod with slight handheld drift. Style: photorealistic film photography, film grain, no CGI. Environment: ' + (state.world && state.world.context || 'natural environment') + '. Lighting: ' + (state.world && state.world.lighting || 'natural light') + '. Composition: cinematic. Duration 5 seconds. Vertical 9:16. No music, no text.';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDU CARTE
+// ═══════════════════════════════════════════════════════════════
+function buildCardHTML(photo) {
+  const meta = SHOT_TYPE_META[photo.kind] || SHOT_TYPE_META.heros;
+  const badgeLabel = '🎬 ' + meta.label;
+  const vp = buildVideoPrompt(photo);
+  let imgHtml;
+  if (photo.url && photo.url !== 'error') imgHtml = '<img src="' + photo.url + '" loading="lazy" alt="">';
+  else if (photo.url === 'error') imgHtml = '<div class="err">✕ Échec<br>' + esc(trunc(photo.error || '', 80)) + '</div>';
+  else imgHtml = '<div class="load">Génération…</div>';
+  return '<div class="photo-img">' + imgHtml + '</div>' +
+    '<div class="photo-meta">' +
+    '<span class="pbadge ' + meta.badge + '">' + badgeLabel + '</span>' +
+    '<span class="pbadge ' + meta.badge + '">#' + photo.index + '</span>' +
+    '<div class="ptitle">' + esc(photo.label) + '</div>' +
+    (photo.beat ? '<div class="pbeat">' + esc(photo.beat) + '</div>' : '') +
+    '<div class="pblock">' +
+    '<div class="plabel">📸 Prompt image</div>' +
+    '<button class="pcopy" data-copy="' + esc(photo.fullPrompt || photo.prompt) + '">Copier</button>' +
+    '<div class="ptext">' + esc(photo.fullPrompt || photo.prompt) + '</div>' +
+    '</div>' +
+    '<div class="pblock video">' +
+    '<div class="plabel">🎬 Prompt vidéo Google Flow</div>' +
+    '<button class="pcopy" data-copy="' + esc(vp) + '">Copier</button>' +
+    '<div class="ptext">' + esc(vp) + '</div>' +
+    '</div>' +
+    (photo.url && photo.url !== 'error' ? '<a class="popen" href="' + photo.url + '" target="_blank" rel="noopener">Ouvrir</a>' : '') +
+    '</div>';
+}
+
+function attachCopyHandlers(card) {
+  card.querySelectorAll('[data-copy]').forEach(b => b.onclick = (e) => {
+    e.stopPropagation();
+    const ta = document.createElement('textarea');
+    ta.value = b.dataset.copy;
+    ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (er) {}
+    document.body.removeChild(ta);
+    toast(ok ? 'Copié' : 'Copie impossible', ok ? 'success' : 'error', 1500);
+  });
+}
+
+function renderPhoto(photo) {
+  const grid = $('photoGrid');
+  const card = document.createElement('div');
+  card.className = 'photo';
+  card.dataset.idx = photo.index;
+  card.innerHTML = buildCardHTML(photo);
+  grid.appendChild(card);
+  attachCopyHandlers(card);
+}
+
+function updateCard(photo) {
+  const old = document.querySelector('.photo[data-idx="' + photo.index + '"]');
+  if (!old) { renderPhoto(photo); return; }
+  const card = document.createElement('div');
+  card.className = 'photo';
+  card.dataset.idx = photo.index;
+  card.innerHTML = buildCardHTML(photo);
+  old.replaceWith(card);
+  attachCopyHandlers(card);
+}
+
+function updateResultsHeader() {
+  const h = $('resultsHeader');
+  h.classList.remove('hidden');
+  h.style.display = 'flex';
+  $('resultsCount').textContent = state.completed + ' / ' + state.total;
+}
+function updateQueue() {
+  const q = $('queue');
+  q.classList.add('visible');
+  q.innerHTML = '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem;">' +
+    '<span style="color:#fcd34d;font-weight:700;">PLANS : ' + state.completed + ' / ' + state.total + '</span>' +
+    '<span style="color:#64748b;">' + (state.completed < state.total ? '~' + fmtEta((state.total - state.completed) * 3.5 / Math.max(1, state.apiKeys.length)) : 'Terminé') + '</span>' +
+    '</div>';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PIPELINE
+// ═══════════════════════════════════════════════════════════════
+async function runGeneration() {
+  if (state.isRunning) return;
+  if (state.apiKeys.length === 0) { toast('Validez vos clés API', 'error'); return; }
+  const hasInput = state.refImage || (state.scenario || '').trim() || (state.userPrompt || '').trim();
+  if (!hasInput) { toast('Ajoutez une image ou un scénario', 'error'); return; }
+
+  state.isRunning = true;
+  state.stopRequested = false;
+  state.completed = 0;
+  state.total = 0;
+  state.keyIndex = 0;
+  state.startTime = Date.now();
+  state.story = null;
+
+  $('photoGrid').innerHTML = '';
+  $('resultsHeader').classList.add('hidden');
+  $('stopBtn').classList.remove('hidden');
+  $('phaseBar').classList.add('visible');
+  $('queue').classList.remove('visible');
+  updateGenBtn();
+
+  human('🚀 Démarrage…');
+  debug('Démarrage · ' + state.apiKeys.length + ' clé(s) · image=' + (state.refImage ? 'oui' : 'non') + ' · scénario=' + ((state.scenario || '').trim() ? 'oui' : 'non'), 'ok');
+
+  try {
+    setPhase('analyze', '🔍 Analyse du scénario et du protagoniste…', '');
+    setStatus('Analyse…');
+    human('🔍 Analyse du scénario et du protagoniste…');
+    state.world = await analyzeScene(state.refImage, (state.scenario || '').trim(), (state.userPrompt || '').trim());
+    if (state.stopRequested) throw new Error('Arrêt');
+    refreshRefPanel();
+    debug('Analyse OK · face_dna=' + trunc(state.world.face_dna, 120), 'ok');
+    human('✅ Analyse terminée · « ' + (state.story && state.story.title || '') + ' »');
+    setPhase('analyze', '🔍 Analyse OK · ' + (state.story && state.story.characters ? state.story.characters.length : 0) + ' personnages', '');
+    await sleep(300);
+
+    await buildStoryboard();
+    if (state.stopRequested) throw new Error('Arrêt');
+    state.total = state.plan.length;
+    updateQueue();
+    debug('Storyboard prêt : ' + state.total + ' plans', 'ok');
+    human('🎬 ' + state.total + ' plans écrits');
+    setPhase('plan', '📝 ' + state.total + ' plans prêts', '');
+    await sleep(300);
+
+    setPhase('images', '📸 Génération…', '');
+    setStatus('Génération…');
+    await generateAll();
+    if (state.stopRequested) throw new Error('Arrêt');
+
+    setPhase('done', '✦ Terminé ✦', '');
+    human('✨ Terminé ! ' + state.completed + ' plans en ' + fmtEta((Date.now() - state.startTime) / 1000));
+    debug('FIN : ' + state.completed + ' plans', 'ok');
+
+  } catch (e) {
+    if (e.message === 'Arrêt') human('⏹ Arrêté');
+    else { debug('Erreur pipeline : ' + e.message, 'err'); human('❌ ' + e.message); }
+  } finally {
+    state.isRunning = false;
+    state.stopRequested = false;
+    $('stopBtn').classList.add('hidden');
+    updateGenBtn();
+    setStatus(null);
+    toast(state.completed + ' plan(s)', state.completed > 0 ? 'success' : 'error', 4000);
+  }
+}
+
+async function generateAll() {
+  const tasks = state.plan;
+  const nKeys = state.apiKeys.length;
+  const globalConcurrency = Math.min(nKeys * CONCURRENCY_PER_KEY, tasks.length);
+  const lastStartPerKey = {};
+  let idx = 0;
+
+  debug('Workers : ' + globalConcurrency + ' (' + nKeys + ' clés × ' + CONCURRENCY_PER_KEY + ')', 'api');
+
+  async function worker(slot) {
+    while (!state.stopRequested && idx < tasks.length) {
+      const myIdx = idx++;
+      const task = tasks[myIdx];
+      if (!task) return;
+      const keySlot = slot % nKeys;
+      const now = Date.now();
+      const wait = Math.max(0, (lastStartPerKey[keySlot] || 0) + DELAY_PER_KEY_MS - now);
+      lastStartPerKey[keySlot] = Date.now() + wait;
+      if (wait > 0) await sleep(wait);
+      if (state.stopRequested) return;
+
+      task.status = 'generating';
+      updateCard(task);
+
+      try {
+        task.url = await apiImage(task.fullPrompt || task.prompt);
+        state.completed++;
+        debug('OK ' + state.completed + '/' + state.total + ' · #' + task.index + ' ' + task.label, 'ok');
+        human('📸 ' + state.completed + '/' + state.total + ' · ' + task.label.slice(0, 40));
+      } catch (e) {
+        if (e.message === 'Arrêt') { task.status = 'pending'; return; }
+        task.url = 'error';
+        task.error = e.message;
+        state.completed++;
+        debug('KO · #' + task.index + ' ' + task.label + ' · ' + e.message, 'err');
+      }
+      task.status = 'done';
+      updateCard(task);
+      setPhase('images', '📸 ' + state.completed + ' / ' + state.total,
+        '~' + fmtEta((state.total - state.completed) * 3.5 / Math.max(1, nKeys)));
+      updateQueue();
+      updateResultsHeader();
+    }
+  }
+
+  await Promise.all(Array.from({ length: globalConcurrency }, (_, i) => worker(i)));
+}
+
+function stopGeneration() {
+  if (!state.isRunning) return;
+  state.stopRequested = true;
+  human('⏹ Arrêt demandé…');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+function bind() {
+  $('validateBtn').addEventListener('click', validateAndSaveKeys);
+  $('clearBtn').addEventListener('click', () => {
+    $('keysInput').value = '';
+    state.apiKeys = [];
+    storageDel(KEYS_STORAGE);
+    $('keyStatus').className = 'status-line';
+    $('keyStatusText').textContent = 'Aucune clé enregistrée';
+    updateKeyBadge();
+    toast('Clés effacées', 'warn');
+  });
+
+  $('refInput').addEventListener('change', (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (f) handleRefFile(f);
+    e.target.value = '';
+  });
+  $('removeRefBtn').addEventListener('click', removeRef);
+  $('analyzeBtn').addEventListener('click', async () => {
+    if (!state.refImage || state.isAnalyzing) return;
+    if (state.apiKeys.length === 0) { toast('Ajoutez une clé API', 'error'); return; }
+    state.isAnalyzing = true;
+    refreshRefPanel();
+    setStatus('Analyse…');
+    human('🔍 Analyse (image + scénario)…');
+    try {
+      state.world = await analyzeScene(state.refImage, (state.scenario || '').trim(), (state.userPrompt || '').trim());
+      debug('Analyse manuelle OK · face_dna=' + trunc(state.world.face_dna, 120), 'ok');
+      toast('Analyse terminée', 'success');
+      human('✅ Analyse OK · « ' + (state.story && state.story.title || '') + ' »');
+    } catch (e) {
+      debug('Analyse impossible : ' + e.message, 'err');
+      toast('Analyse impossible', 'error');
+      human('❌ Analyse impossible');
+    }
+    state.isAnalyzing = false;
+    refreshRefPanel();
+    setStatus(null);
+  });
+
+  $('scenarioInput').addEventListener('input', updateScenarioBadge);
+  $('promptInput').addEventListener('input', updatePromptBadge);
+  $('genBtn').addEventListener('click', runGeneration);
+  $('stopBtn').addEventListener('click', stopGeneration);
+
+  const handle = $('panelHandle');
+  const content = $('panelContent');
+  const toggleText = $('panelToggle');
+  let open = false;
+  handle.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') return;
+    open = !open;
+    content.classList.toggle('hidden', !open);
+    toggleText.textContent = (open ? '▲' : '▼') + ' CONSOLE';
+  });
+  $('copyConsoleBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    const txt = state.debugLog.map(d => d.t + ' ' + d.m).join('\n');
+    const ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (er) {}
+    document.body.removeChild(ta);
+    toast(ok ? 'Console copiée' : 'Copie impossible', ok ? 'success' : 'error', 1500);
+  });
+  $('clearConsoleBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    state.debugLog = [];
+    renderDebug();
+    toast('Console effacée', 'warn', 1200);
+  });
+
+  try {
+    const saved = JSON.parse(storageGet(KEYS_STORAGE) || '[]');
+    if (Array.isArray(saved) && saved.length > 0) {
+      state.apiKeys = saved;
+      $('keysInput').value = saved.join('\n');
+      $('keyStatus').className = 'status-line ok';
+      $('keyStatusText').textContent = saved.length + ' clé(s) restaurée(s)';
+    }
+  } catch (e) {}
+
+  try {
+    const refRaw = storageGet(REF_STORAGE);
+    if (refRaw) {
+      const d = JSON.parse(refRaw);
+      if (d && typeof d.img === 'string' && d.img.startsWith('data:image/')) {
+        state.refImage = d.img;
+        state.refName = d.name || 'référence';
+        human('📷 Image restaurée');
+      }
+    }
+  } catch (e) {}
+
+  try {
+    const sp = storageGet(PROMPT_STORAGE);
+    if (sp) $('promptInput').value = sp;
+  } catch (e) {}
+
+  try {
+    const sc = storageGet(SCENARIO_STORAGE);
+    if (sc) $('scenarioInput').value = sc;
+  } catch (e) {}
+
+  refreshRefPanel();
+  updateScenarioBadge();
+  updatePromptBadge();
+  updateKeyBadge();
+
+  human('👋 Prêt. Clés → image + scénario → Générer.');
+  debug('Visual.Studio v13 · STORYBOARD · size=' + IMAGE_SIZE + ' · modèle=' + MODEL_IMAGE + ' · endpoint text-to-image inchangé', 'api');
+  debug('Total cible : ' + SHOTS_TOTAL + ' plans en ' + SHOT_CHUNKS + ' actes de ' + SHOTS_PER_CHUNK, 'api');
+  if (!STORAGE_OK) debug('Stockage indisponible : session uniquement', 'warn');
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+else bind();
+</script>
+</body>
+</html>
