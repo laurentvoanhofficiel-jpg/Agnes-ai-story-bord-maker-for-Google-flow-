@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Visual.Studio — 50 Styles Lab</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;background:#020617;color:#f1f5f9;min-height:100vh;padding:1rem 1rem 12rem;font-size:14px;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto}
+header{text-align:center;padding:1.5rem 0;border-bottom:1px solid #1e293b;margin-bottom:1.5rem}
+h1{font-family:Georgia,serif;font-size:2.2rem;font-weight:300;letter-spacing:.02em;margin-bottom:.4rem;background:linear-gradient(135deg,#e87b35 0%,#e5c15a 30%,#a8d8c8 50%,#c8b0e0 75%,#8b5fc4 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1.05}
+.sub{font-family:Georgia,serif;font-style:italic;font-size:.85rem;color:#64748b}
+.kata{font-size:.7rem;letter-spacing:.4em;color:#fbbf24;opacity:.75;text-transform:uppercase;margin-bottom:.5rem}
+.banner{background:linear-gradient(135deg,rgba(139,95,196,.06),rgba(16,185,129,.05));border:1px solid #1e293b;border-left:2px solid #a78bfa;border-radius:4px;padding:1rem 1.15rem;font-size:.78rem;color:#94a3b8;margin-bottom:1.2rem;line-height:1.6}
+.banner strong{color:#f1f5f9;font-weight:600}
+.banner .hl-v{color:#c4b5fd}.banner .hl-e{color:#6ee7b7}.banner .hl-a{color:#fcd34d}
+.card{background:#0f172a;border:1px solid #1e293b;border-radius:4px;margin-bottom:1rem;overflow:hidden}
+.card-head{padding:.85rem 1rem;border-bottom:1px solid #1e293b;display:flex;justify-content:space-between;align-items:center;font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:#e2e8f0;font-weight:600}
+.card-head .badge{font-size:.6rem;padding:.15rem .5rem;border:1px solid #b45309;color:#fbbf24;border-radius:2px;letter-spacing:.1em}
+.card-body{padding:1rem}
+textarea,input[type=text],input[type=password]{width:100%;background:#020617;border:1px solid #1e293b;border-radius:4px;padding:.7rem .85rem;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:.78rem;color:#f1f5f9;outline:none}
+textarea:focus,input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+textarea{min-height:90px;resize:vertical;line-height:1.55}
+textarea.scenario{min-height:120px;font-size:.82rem;line-height:1.65;border-color:#4c1d95}
+textarea.scenario:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.15)}
+textarea:disabled,input:disabled{opacity:.5;cursor:not-allowed}
+.btn{width:100%;padding:.85rem;border-radius:4px;font-size:.78rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:all .15s}
+.btn-amber{background:linear-gradient(135deg,rgba(232,123,53,.15),rgba(229,193,90,.1));border-color:#b45309;color:#fcd34d}
+.btn-amber:hover:not(:disabled){background:rgba(245,158,11,.2)}
+.btn-amber:disabled{opacity:.3;cursor:not-allowed}
+.btn-red{background:transparent;border-color:#b91c1c;color:#f87171}
+.btn-slate{background:transparent;border-color:#334155;color:#94a3b8;font-size:.68rem;padding:.6rem}
+.btn-slate:hover:not(:disabled){color:#f87171;border-color:#b91c1c}
+.btn-slate:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:.5rem;margin-top:.6rem}
+.status-line{display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem;background:#020617;border:1px solid #1e293b;border-radius:4px;font-size:.75rem;color:#64748b;margin-top:.7rem}
+.status-line.ok{background:rgba(16,185,129,.08);border-color:#065f46;color:#34d399}
+.status-line.err{background:rgba(239,68,68,.08);border-color:#7f1d1d;color:#f87171}
+.status-line .dot{width:6px;height:6px;border-radius:50%;background:#475569;flex-shrink:0}
+.status-line.ok .dot{background:#10b981;box-shadow:0 0 6px #10b981}
+.status-line.err .dot{background:#ef4444}
+.hint{font-size:.7rem;color:#64748b;margin-top:.5rem}
+.hint a{color:#60a5fa;text-decoration:none;border-bottom:1px dotted #1e40af}
+.drop{border:2px dashed #334155;border-radius:4px;padding:1.5rem 1rem;text-align:center;cursor:pointer;position:relative;transition:all .15s;display:block}
+.drop:hover{border-color:#b45309;background:rgba(245,158,11,.03)}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop .icon{font-size:2rem;opacity:.5;margin-bottom:.4rem}
+.drop .txt{font-size:.82rem;color:#94a3b8}
+.drop .txt strong{color:#fcd34d}
+.drop .sub{font-size:.68rem;color:#475569;margin-top:.4rem;font-family:ui-monospace,monospace}
+body.locked .drop{pointer-events:none;opacity:.6}
+.preview{margin-top:.8rem;text-align:center}
+.preview img{max-width:100%;max-height:280px;border:1px solid #1e293b;border-radius:4px;display:block;margin:0 auto}
+.preview .name{font-size:.66rem;color:#fcd34d;font-family:ui-monospace,monospace;margin-top:.4rem}
+.analysis{background:#020617;border:1px solid #1e293b;border-radius:4px;padding:.75rem;margin-top:.7rem;font-size:.7rem;font-family:ui-monospace,monospace;color:#94a3b8;max-height:280px;overflow-y:auto;white-space:pre-wrap;display:none}
+.analysis.visible{display:block}
+.analysis .k{color:#fbbf24;font-weight:700}
+.analysis .warn{color:#f87171;font-weight:700}
+.styles-panel{display:none;background:#0f172a;border:1px solid #1e293b;border-left:3px solid #10b981;border-radius:4px;margin-bottom:1rem;overflow:hidden}
+.styles-panel.visible{display:block}
+.styles-panel-head{padding:.75rem 1rem;border-bottom:1px solid #1e293b;font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:#e2e8f0;font-weight:600;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem}
+.styles-list{max-height:300px;overflow-y:auto;padding:.5rem .6rem;display:grid;grid-template-columns:1fr;gap:.35rem}
+@media(min-width:640px){.styles-list{grid-template-columns:1fr 1fr}}
+.style-row{display:flex;gap:.55rem;padding:.4rem .55rem;border-bottom:1px solid #1e293b;font-size:.7rem;align-items:center;color:#94a3b8}
+.style-row:last-child{border-bottom:none}
+.style-row .num{font-family:ui-monospace,monospace;color:#fbbf24;font-weight:700;font-size:.68rem;min-width:26px}
+.style-row .lbl{color:#e2e8f0;font-weight:600;font-size:.7rem}
+.phase{background:#0f172a;border:1px solid #1e293b;border-left:2px solid #8b5cf6;border-radius:4px;padding:.85rem 1rem;margin-bottom:1rem;display:none}
+.phase.visible{display:block}
+.steps{display:flex;gap:.3rem;margin-bottom:.6rem;flex-wrap:wrap}
+.step{flex:1;min-width:60px;padding:.4rem .3rem;text-align:center;font-size:.55rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;background:#020617;border:1px solid #1e293b;border-radius:4px;color:#475569}
+.step.active{background:rgba(245,158,11,.08);border-color:#b45309;color:#fcd34d}
+.step.done{background:rgba(16,185,129,.08);border-color:#065f46;color:#34d399}
+.phase-info{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem;font-size:.72rem;font-family:ui-monospace,monospace;color:#94a3b8}
+.queue{display:none;background:#0f172a;border:1px solid #1e293b;border-left:2px solid #8b5cf6;border-radius:4px;padding:.7rem .9rem;margin-bottom:1rem;font-size:.72rem;font-family:ui-monospace,monospace}
+.queue.visible{display:block}
+.grid{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1024px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.photo{background:#0f172a;border:1px solid #1e293b;border-radius:4px;overflow:hidden}
+.photo-img{aspect-ratio:9/16;background:#000;display:flex;align-items:center;justify-content:center;position:relative}
+.photo-img img{width:100%;height:100%;object-fit:contain;display:block}
+.photo-img .load{width:100%;height:100%;background:#020617;display:flex;align-items:center;justify-content:center;color:#475569;font-size:.72rem;font-family:ui-monospace,monospace;position:relative;overflow:hidden}
+.photo-img .load::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(245,158,11,.06) 50%,transparent 70%);animation:shim 1.8s linear infinite}
+@keyframes shim{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.photo-img .err{width:100%;height:100%;background:rgba(127,29,29,.2);display:flex;align-items:center;justify-content:center;color:#f87171;font-size:.72rem;text-align:center;padding:.6rem}
+.photo-meta{padding:.7rem;border-top:1px solid #1e293b}
+.pbadge{display:inline-block;font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;padding:.12rem .45rem;border-radius:2px;margin-right:.3rem;margin-bottom:.4rem;font-weight:700;border:1px solid}
+.pbadge.sty{background:rgba(139,92,246,.1);color:#a78bfa;border-color:#5b21b6}
+.pbadge.num{background:rgba(245,158,11,.1);color:#fbbf24;border-color:#92400e}
+.ptitle{font-family:Georgia,serif;font-size:.85rem;color:#fcd34d;margin-bottom:.3rem}
+.pbeat{font-size:.62rem;color:#a78bfa;font-style:italic;margin-bottom:.5rem;line-height:1.4}
+.pblock{background:#020617;border:1px solid #1e293b;border-radius:4px;padding:.55rem;margin-bottom:.4rem;position:relative}
+.pblock.video{border-left:2px solid #7c3aed}
+.plabel{font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;color:#64748b;font-family:ui-monospace,monospace;margin-bottom:.35rem}
+.pblock.video .plabel{color:#a78bfa}
+.ptext{font-size:.65rem;color:#94a3b8;font-family:ui-monospace,monospace;line-height:1.45;max-height:180px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;padding-right:3.5rem}
+.pcopy{position:absolute;top:.4rem;right:.4rem;font-size:.55rem;padding:.12rem .4rem;border:1px solid #334155;border-radius:2px;background:transparent;color:#64748b;cursor:pointer}
+.pcopy:hover{color:#fcd34d;border-color:#b45309}
+.popen{display:block;text-align:center;margin-top:.5rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.15em;padding:.4rem;border:1px solid #334155;border-radius:4px;color:#94a3b8;text-decoration:none}
+.popen:hover{color:#fcd34d;border-color:#b45309}
+.panel{position:fixed;bottom:0;left:0;right:0;z-index:40}
+.handle{background:#0f172a;border-top:2px solid #b45309;padding:.55rem 1rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.handle .left{display:flex;align-items:center;gap:.6rem;min-width:0;flex:1}
+.handle .toggle{font-family:ui-monospace,monospace;font-size:.72rem;color:#fbbf24;letter-spacing:.1em}
+.handle .latest{font-size:.72rem;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.handle .actions{display:flex;gap:.3rem}
+.handle .actions button{font-size:.6rem;padding:.2rem .5rem;border:1px solid #334155;border-radius:3px;background:transparent;color:#64748b;cursor:pointer}
+.handle .actions button:hover{color:#fcd34d;border-color:#b45309}
+.panel-content{background:#020617;border-top:1px solid #1e293b;max-height:60vh;overflow-y:auto}
+.panel-content.hidden{display:none}
+.human-log{max-height:100px;overflow-y:auto;padding:.6rem 1rem;border-bottom:1px solid #1e293b;font-family:ui-monospace,monospace;font-size:.7rem}
+.human-log>div{margin-bottom:.2rem}
+.human-log .t{color:#475569}
+.human-log .m{color:#34d399}
+.debug-log{max-height:240px;overflow-y:auto;padding:.6rem 1rem;font-family:ui-monospace,monospace;font-size:.68rem}
+.debug-log>div{margin-bottom:.15rem;word-break:break-word}
+.debug-log .t{color:#475569}
+.debug-log .info{color:#94a3b8}
+.debug-log .ok{color:#34d399}
+.debug-log .warn{color:#fbbf24}
+.debug-log .err{color:#f87171}
+.debug-log .api{color:#60a5fa}
+.toast{position:fixed;top:1rem;left:50%;transform:translateX(-50%) translateY(-120px);background:#0f172a;border:1px solid #1e293b;border-left:3px solid #fbbf24;border-radius:4px;padding:.75rem 1.2rem;font-size:.8rem;z-index:1000;opacity:0;transition:transform .3s,opacity .3s;max-width:90vw;text-align:center}
+.toast.visible{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.success{border-left-color:#10b981}
+.toast.error{border-left-color:#ef4444}
+.toast.warn{border-left-color:#f59e0b}
+.status-bar{position:fixed;bottom:60px;left:0;right:0;background:#0f172a;border-top:1px solid #1e293b;padding:.5rem 1rem;font-size:.7rem;font-family:ui-monospace,monospace;color:#f1f5f9;display:flex;align-items:center;gap:.5rem;transform:translateY(100%);transition:transform .3s;z-index:30}
+.status-bar.visible{transform:translateY(0)}
+.status-bar .spinner{width:12px;height:12px;border:2px solid rgba(245,158,11,.2);border-top-color:#f59e0b;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:#0f172a}
+::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+.hidden{display:none!important}
+body.locked #genBtn{opacity:.4;cursor:not-allowed}
+body.locked .card-head::after{content:' · 🔒';color:#fbbf24;font-size:.65rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<div class="kata">武 · Visual.Studio · 50 Styles Lab</div>
+<h1>Visual.Studio</h1>
+<p class="sub">Un personnage · 50 styles · 50 artistes · 50 images</p>
+</header>
+
+<div class="banner">
+<strong>Principe :</strong> ajoutez vos <strong class="hl-v">clés API</strong>, une <strong class="hl-e">image</strong> (souvent le protagoniste), et/ou un <strong class="hl-a">prompt</strong>. L'IA analyse l'image, verrouille le visage, puis génère <strong>50 images</strong> du même personnage dans <strong>50 styles visuels différents</strong> — cinéma, animation, peintres, époques photo, scènes de genre (samouraï, ninja, moine, alien, disco, rappeur, skieur, mannequin, jazz…).
+</div>
+
+<section class="card">
+<div class="card-head"><span>🔑 Clés API Agnes</span><span class="badge" id="keyBadge">0 validée</span></div>
+<div class="card-body">
+<textarea id="keysInput" placeholder="Collez vos clés API ici, une par ligne :&#10;sk-xxxxxxxxxxxx&#10;sk-yyyyyyyyyyyy" autocomplete="off" spellcheck="false"></textarea>
+<div class="row">
+<button class="btn btn-amber" id="validateBtn">🔐 Valider et enregistrer</button>
+<button class="btn btn-slate" id="clearBtn" style="width:auto;min-width:80px;">Effacer</button>
+</div>
+<div class="status-line" id="keyStatus"><span class="dot"></span><span id="keyStatusText">Aucune clé enregistrée</span></div>
+<div class="hint">Clé sur <a href="https://platform.agnes-ai.com" target="_blank">platform.agnes-ai.com</a> → Settings → API Keys.</div>
+</div>
+</section>
+
+<section class="card">
+<div class="card-head"><span>🖼️ Image du personnage (optionnel mais recommandé)</span><span class="badge" id="refBadge">0 image</span></div>
+<div class="card-body">
+<label class="drop">
+<input type="file" accept="image/*" id="refInput">
+<div class="icon">📷</div>
+<div class="txt"><strong>Cliquez pour choisir une image</strong><br>Le personnage à décliner</div>
+<div class="sub">Sert à verrouiller le visage pour les 50 styles.</div>
+</label>
+<div class="preview hidden" id="refPreview">
+<img id="refPreviewImg" alt="">
+<div class="name" id="refPreviewName"></div>
+<div class="row" style="justify-content:center;">
+<button class="btn btn-amber" id="analyzeBtn" style="max-width:200px;">Analyser</button>
+<button class="btn btn-slate" id="removeRefBtn" style="max-width:120px;">Retirer</button>
+</div>
+</div>
+<div class="analysis" id="analysisBox"></div>
+</div>
+</section>
+
+<section class="card">
+<div class="card-head"><span>✍️ Prompt / description libre (optionnel)</span><span class="badge" id="promptBadge">0 mot</span></div>
+<div class="card-body">
+<textarea id="promptInput" class="scenario" placeholder="Décrivez le personnage ou l'ambiance : âge, cheveux, yeux, vêtements, époque, humeur… Ou laissez vide si vous fournissez une image." rows="4" spellcheck="false"></textarea>
+<div class="hint">Si une image est fournie, ce prompt sert de <strong>contexte additionnel</strong> (époque, ambiance). Sans image, il <strong>décrit le personnage</strong> à décliner dans les 50 styles.</div>
+</div>
+</section>
+
+<button class="btn btn-amber" id="genBtn" disabled style="margin-bottom:1rem;">Ajoutez une clé API + image ou prompt</button>
+<button class="btn btn-red hidden" id="stopBtn" style="margin-bottom:1rem;">⏹ Arrêter</button>
+
+<div class="phase" id="phaseBar">
+<div class="steps">
+<div class="step" data-p="analyze">1 · Analyse</div>
+<div class="step" data-p="plan">2 · Styles</div>
+<div class="step" data-p="images">3 · Images</div>
+<div class="step" data-p="done">4 · Fini</div>
+</div>
+<div class="phase-info"><span id="phaseDetail">En attente</span><span id="phaseEta"></span></div>
+</div>
+
+<div class="queue" id="queue"></div>
+
+<div class="styles-panel" id="stylesPanel">
+<div class="styles-panel-head">
+<span>🎨 Les 50 styles du film</span>
+<span id="stylesCount" style="font-family:ui-monospace,monospace;color:#94a3b8;letter-spacing:0;">0 / 50</span>
+</div>
+<div class="styles-list" id="stylesList"></div>
+</div>
+
+<div id="resultsHeader" class="hidden" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;flex-wrap:wrap;gap:.5rem;">
+<div style="font-family:Georgia,serif;font-size:1.05rem;letter-spacing:.15em;text-transform:uppercase;">🎨 50 Styles</div>
+<div id="resultsCount" style="font-size:.72rem;font-family:ui-monospace,monospace;color:#94a3b8;">0 / 50</div>
+</div>
+<div class="grid" id="photoGrid"></div>
+
+</div>
+
+<div class="panel">
+<div class="handle" id="panelHandle">
+<div class="left">
+<span class="toggle" id="panelToggle">▼ CONSOLE</span>
+<span class="latest" id="humanLatest">Prêt.</span>
+</div>
+<div class="actions">
+<button id="copyConsoleBtn">Copier</button>
+<button id="clearConsoleBtn">Effacer</button>
+</div>
+</div>
+<div class="panel-content hidden" id="panelContent">
+<div class="human-log" id="humanLog"></div>
+<div class="debug-log" id="debugLog"></div>
+</div>
+</div>
+
+<div class="toast" id="toast"><span id="toastText">Message</span></div>
+<div class="status-bar" id="statusBar"><div class="spinner"></div><span id="statusText">Préparation…</span></div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════════════
+const API_BASE = 'https://apihub.agnes-ai.com/v1';
+const MODEL_TEXT = 'agnes-2.5-flash';
+const MODEL_IMAGE = 'agnes-image-2.1-flash';
+const IMAGE_SIZE = '1024x1792';
+const CONCURRENCY_PER_KEY = 2;
+const DELAY_PER_KEY_MS = 3400;
+const REF_MAX_SIDE = 1280;
+const KEYS_STORAGE = 'vs50_keys_v1';
+const PROMPT_STORAGE = 'vs50_prompt_v1';
+const REF_STORAGE = 'vs50_ref_v1';
+const DEBUG_MAX = 400;
+
+const TOTAL_STYLES = 50;
+const IMAGES_PER_CHUNK = 1;
+
+// ═══════════════════════════════════════════════════════════════
+// LES 50 STYLES — chaque style = un artiste / une esthétique
+// ═══════════════════════════════════════════════════════════════
+const STYLES = [
+  { id:'hollywood', name:'Affiche de cinéma hollywoodien', tag:'Cinéma',
+    prompt:'Hollywood blockbuster movie poster, dramatic rim lighting, cinematic composition, epic scale, bold negative space at the bottom for a title, high contrast, heroic pose, glossy marketing poster aesthetic, shot on 35mm film' },
+  { id:'punk', name:'Punk rock', tag:'Culture',
+    prompt:'1977 punk rock aesthetic, torn photocopied fanzine look, safety pins, spiked hair, leather jacket, harsh direct flash photography, xerox grain, black and white with one red accent, raw DIY attitude' },
+  { id:'simpsons', name:'Les Simpson (Matt Groening)', tag:'Animation',
+    prompt:'Matt Groening Simpsons cartoon style, yellow skin, four fingers, overbite, bold black outlines, flat saturated colors, simple geometric shapes, animation cel look, clean vector-like rendering' },
+  { id:'southpark', name:'South Park (Parker & Stone)', tag:'Animation',
+    prompt:'South Park cartoon style by Trey Parker and Matt Stone, simple cutout paper animation look, round heads, tiny bodies, flat colors, crude construction-paper aesthetic, deadpan humour' },
+  { id:'manga', name:'Manga classique', tag:'Animation',
+    prompt:'classic shonen manga style, black and white ink, screentones, dynamic speed lines, large expressive eyes, Japanese comic aesthetic, sharp confident linework, dramatic panel composition' },
+  { id:'akira', name:'Manga Akira (Katsuhiro Otomo)', tag:'Animation',
+    prompt:'Katsuhiro Otomo Akira manga style, cyberpunk Neo-Tokyo aesthetic, hyper-detailed mechanical linework, dystopian background, dramatic cross-hatched shading, muted palette with bright red accents, hand-drawn ink' },
+  { id:'ghibli', name:'Studio Ghibli (Miyazaki)', tag:'Animation',
+    prompt:'Studio Ghibli animation style by Hayao Miyazaki, soft watercolor painted backgrounds, gentle warm lighting, detailed natural environments, hand-painted cel animation, nostalgic tender mood, quiet magic' },
+  { id:'kubrick', name:'Stanley Kubrick', tag:'Cinéma',
+    prompt:'Stanley Kubrick cinematography, strict one-point perspective, perfectly symmetrical composition, wide-angle lens, clinical cool lighting, 35mm film, stark unsettling elegance' },
+  { id:'fashion', name:'Photographe de mode', tag:'Photo',
+    prompt:'high fashion editorial photography, Vogue magazine cover style, controlled studio lighting, cinematic elegance, confident model pose, sharp tailoring, luxury aesthetic, Peter Lindbergh / Annie Leibovitz influence, medium format film' },
+  { id:'anderson', name:'Wes Anderson', tag:'Cinéma',
+    prompt:'Wes Anderson cinematic style, perfectly symmetrical centered framing, pastel color palette, deadpan expression, whimsical production design, whip-pan energy frozen in one frame, 35mm film, meticulous set dressing' },
+  { id:'kurosawa', name:'Akira Kurosawa', tag:'Cinéma',
+    prompt:'Akira Kurosawa jidaigeki cinematography, black and white 35mm, dynamic weather, dramatic staging, epic samurai framing, deep focus, telephoto compression, Toshiro Mifune intensity' },
+  { id:'samurai', name:'Samouraï', tag:'Personnage',
+    prompt:'feudal Japanese samurai, traditional lacquered armor and katana, cherry blossom petals in the air, dramatic stormy sky, ukiyo-e influence, painterly and heroic, cinematic composition, firelight and steel' },
+  { id:'ninja', name:'Ninja', tag:'Personnage',
+    prompt:'ninja assassin in black shinobi shozoku, moonlit rooftop, drifting mist, stealth crouched pose, katana drawn and glinting, Japanese night atmosphere, cinematic dramatic side lighting, silent tension' },
+  { id:'shaolin', name:'Moine Shaolin', tag:'Personnage',
+    prompt:'Shaolin monk in orange robes, shaved head, ancient temple courtyard, incense smoke drifting, martial arts stance, warm morning light through columns, Chinese monastery aesthetic, cinematic serenity and power' },
+  { id:'alien', name:'Extraterrestre', tag:'Personnage',
+    prompt:'alien being, bioluminescent translucent skin, otherworldly environment, sci-fi cinematic look, neon atmosphere, deep space colours, majestic and slightly unsettling, volumetric light' },
+  { id:'moviestar', name:'Star de cinéma (tapis rouge)', tag:'Personnage',
+    prompt:'classic Hollywood movie star on the red carpet, exploding flash bulbs, glamorous lighting, elegant evening attire, paparazzi atmosphere, 1950s-2020s cinema glamour, fashion-week energy' },
+  { id:'bollywood', name:'Bollywood', tag:'Personnage',
+    prompt:'Bollywood musical number, vibrant saturated colors, ornate embroidered costume, dramatic dance pose frozen mid-movement, golden hour lighting, Indian cinema poster aesthetic, joyful and exuberant, marigold petals' },
+  { id:'western', name:'Western', tag:'Personnage',
+    prompt:'American western, cowboy hat and duster coat, dusty frontier town, dramatic blood-orange sunset, sepia tones, Sergio Leone cinematography, wide desert landscape, cinematic tension, squinting into the sun' },
+  { id:'sport', name:'Film de sport', tag:'Genre',
+    prompt:'sports movie hero shot, stadium floodlights, sweat and determination, dramatic freeze-frame, cinematic slow-motion feel, motivational poster energy, athlete mid-exploit' },
+  { id:'football', name:'Film de football', tag:'Genre',
+    prompt:'football (soccer) film moment, packed stadium, floodlights and flares, player in action kicking the ball, jersey flying, sweat and grass, cinematic sports photography, crowd blurred behind' },
+  { id:'singer', name:'Star de la chanson', tag:'Personnage',
+    prompt:'pop music superstar on a huge stage, single spotlight, microphone in hand, glittering sequined outfit, audience silhouettes and lighters, concert energy, dramatic stage lighting, sweat and emotion' },
+  { id:'tvhost', name:'Animateur télé', tag:'Personnage',
+    prompt:'television show host on a bright colorful studio set, glossy lighting, camera and teleprompter in frame, microphone, wide professional smile, prime-time TV production look, saturated colours' },
+  { id:'muscular', name:'Homme musclé', tag:'Personnage',
+    prompt:'bodybuilder physique, oiled muscular torso, dramatic side studio lighting, deep black background, 1980s Arnold Schwarzenegger magazine aesthetic, powerful flexed pose, sharp shadows' },
+  { id:'giant', name:'Géant', tag:'Personnage',
+    prompt:'colossal giant towering above a city, extreme low-angle perspective, monumental scale, cinematic fantasy, dramatic clouds, awe-inspiring composition, tiny people below for scale' },
+  { id:'photo1920', name:'Photo années 1920', tag:'Époque',
+    prompt:'authentic 1920s photograph, warm sepia tone, soft-focus lens, art deco framing, vintage clothing and cloche hats, silent film era glamour, aged paper texture, vignetting' },
+  { id:'photo1930', name:'Photo années 1930', tag:'Époque',
+    prompt:'1930s photograph, warm sepia or early two-strip color, Art Deco influence, formal studio pose, fedora hats, classic Hollywood studio lighting, aged print with visible grain and slight fade' },
+  { id:'photo1940', name:'Photo années 1940', tag:'Époque',
+    prompt:'1940s photograph, film noir lighting, black and white, fedora and trench coat, smoky atmosphere, WWII era, dramatic chiaroscuro shadow, cigarette smoke curling in the light' },
+  { id:'photo1950', name:'Photo années 1950', tag:'Époque',
+    prompt:'1950s photograph, Kodachrome color, chrome diner and cars, rockabilly style, saturated but faded hues, mid-century modern, cheerful suburban or drive-in setting' },
+  { id:'photo1970', name:'Photo années 1970', tag:'Époque',
+    prompt:'1970s photograph, warm faded Kodak color, wide collar shirt, shaggy hair, wood paneling and orange shag carpet, analog grain, disco or hippie aesthetic' },
+  { id:'photo1980', name:'Photo années 1980', tag:'Époque',
+    prompt:'1980s photograph, neon magenta and cyan lighting, big hair, denim jacket, arcade or Miami vibe, VHS look, retro synth aesthetic, slight chromatic aberration' },
+  { id:'photo1990', name:'Photo années 1990', tag:'Époque',
+    prompt:'1990s photograph, grunge aesthetic, faded color, flannel shirt, CD player, camcorder look, MTV generation, slightly overexposed direct flash, casual attitude' },
+  { id:'photo1999', name:'Photo années 1999 (Y2K)', tag:'Époque',
+    prompt:'Y2K year 1999 photograph, chrome and iridescent clothing, flip phone, futuristic optimism, silver makeup, cyber aesthetic, low-res early digital camera look, bluish white balance' },
+  { id:'photo2000', name:'Photo années 2000', tag:'Époque',
+    prompt:'early 2000s photograph, low-rise jeans, frosted tips hair, early compact digital camera, pop culture, TRL era, slightly pixelated, harsh on-camera flash' },
+  { id:'photo2010', name:'Photo années 2010', tag:'Époque',
+    prompt:'2010s photograph, Instagram filter aesthetic, hipster style, warm faded tones, shallow depth of field, smartphone photo feel, millennial vibe, tilt-shift blur' },
+  { id:'photo2020', name:'Photo années 2020', tag:'Époque',
+    prompt:'2020s photograph, hyper-real modern digital photography, HDR, cinematic teal-and-orange color grade, contemporary fashion, high production value, razor-sharp detail' },
+  { id:'polaroid', name:'Photo Polaroid', tag:'Photo',
+    prompt:'instant Polaroid photograph, thick white border at the bottom, faded muted colors, slight blur, chemical imperfections and vignetting, peel-apart aesthetic, handwritten date in the corner' },
+  { id:'kitsch', name:'Photo kitsch', tag:'Photo',
+    prompt:'kitsch aesthetic, over-saturated colors, glitter and sequins, golden baroque frames, tacky decorative elements, retro 1980s catalog, ironic and over-the-top, humorous and warm' },
+  { id:'klimt', name:'Gustav Klimt', tag:'Peinture',
+    prompt:'Gustav Klimt style, golden ornamentation, geometric mosaic patterns, rich gold leaf, decorative swirls, Symbolist portraiture, Vienna Secession aesthetic, ornate and sensual' },
+  { id:'schiele', name:'Egon Schiele', tag:'Peinture',
+    prompt:'Egon Schiele style, distorted expressive linework, raw angular figure, muted watercolor and gouache palette, intense unsettling gaze, early 20th century Expressionism, paper texture' },
+  { id:'moebius', name:'Moebius (Jean Giraud)', tag:'BD',
+    prompt:'Moebius (Jean Giraud) comic style, clean precise linework, dreamlike desert landscapes, muted pastel palette, French bande dessinée, intricate architectural detail, sci-fi mysticism, flat airbrushed color' },
+  { id:'bilal', name:'Enki Bilal', tag:'BD',
+    prompt:'Enki Bilal comic style, dark dystopian sci-fi, precise linework, icy palette with blood-red and cobalt-blue accents, monstrous and poetic, European graphic novel aesthetic, architectural vertigo' },
+  { id:'flyer', name:'Flyer pour une soirée', tag:'Graphisme',
+    prompt:'nightclub party flyer design, bold oversized typography, neon colors on black, collage and grunge textures, festive chaos, rave or club aesthetic, high-energy graphic design, halftone dots' },
+  { id:'disco', name:'Star du disco', tag:'Personnage',
+    prompt:'1970s disco star, sequined jumpsuit, mirror-ball reflections, polished dance floor, purple and gold lighting, exuberant dance pose, Studio 54 glamour, glamorous sweat and glitter' },
+  { id:'rapper', name:'Rappeur hip-hop', tag:'Personnage',
+    prompt:'hip-hop rapper, oversized streetwear, heavy gold chains, urban environment, graffiti-covered wall, dramatic low angle, music video lighting, confident pose, bling and attitude' },
+  { id:'dancer', name:'Danseur contemporain', tag:'Personnage',
+    prompt:'contemporary dancer frozen mid-movement, expressive extended body, bare studio or empty stage, dramatic single light, subtle motion blur, elegant gesture, performance art aesthetic, powder or dust in the air' },
+  { id:'skier', name:'Skieur', tag:'Personnage',
+    prompt:'professional alpine skier on a snowy mountain, powder spray exploding behind, dramatic mountain light, goggles and helmet, speed and grace, sports action photography, sharp crisp snow texture' },
+  { id:'model', name:'Mannequin (top model)', tag:'Personnage',
+    prompt:'top fashion model, high-end runway or editorial shoot, couture outfit, elegant elongated pose, minimal set or seamless backdrop, luxury magazine aesthetic, controlled strobe lighting' },
+  { id:'skate', name:'Skateur (skateboard)', tag:'Personnage',
+    prompt:'skateboarder mid-trick, urban skatepark or street spot, golden hour, worn sneakers and baggy jeans, motion blur background, raw street photography, gritty and youthful' },
+  { id:'socks', name:'Vendeur de chaussettes', tag:'Personnage',
+    prompt:'quirky sock salesman at a colorful market stall, hundreds of patterned socks hanging, whimsical shop, warm natural light, humorous charming character portrait, saturated cheerful colours' },
+  { id:'jazz', name:'Joueur de jazz', tag:'Personnage',
+    prompt:'jazz musician playing saxophone or trumpet in a smoky club, warm tungsten practical light, black and white photograph, Blue Note album cover aesthetic, moody and soulful, deep shadows' }
+];
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+const state = {
+  apiKeys: [],
+  refImage: null,
+  refName: null,
+  userPrompt: '',
+  world: null,
+  tasks: [],
+  isRunning: false,
+  isAnalyzing: false,
+  uiLocked: false,
+  stopRequested: false,
+  completed: 0,
+  total: 0,
+  startTime: 0,
+  keyIndex: 0,
+  humanLog: [],
+  debugLog: []
+};
+
+// ═══════════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const nowTime = () => new Date().toLocaleTimeString('fr-FR', { hour12: false });
+
+function human(msg) {
+  state.humanLog.push({ t: nowTime(), m: msg });
+  if (state.humanLog.length > 80) state.humanLog.shift();
+  const el = $('humanLatest'); if (el) el.textContent = msg;
+  renderHuman();
+}
+function renderHuman() {
+  const el = $('humanLog'); if (!el) return;
+  el.innerHTML = state.humanLog.slice(-30).map(e => '<div><span class="t">' + e.t + '</span> <span class="m">' + esc(e.m) + '</span></div>').join('');
+  el.scrollTop = el.scrollHeight;
+}
+function debug(msg, level = 'info') {
+  state.debugLog.push({ t: nowTime(), m: msg, c: level });
+  if (state.debugLog.length > DEBUG_MAX) state.debugLog.shift();
+  renderDebug();
+}
+function renderDebug() {
+  const el = $('debugLog'); if (!el) return;
+  el.innerHTML = state.debugLog.slice(-200).map(e => '<div><span class="t">' + e.t + '</span> <span class="' + e.c + '">' + esc(e.m) + '</span></div>').join('');
+  el.scrollTop = el.scrollHeight;
+}
+function toast(msg, type = 'success', dur = 2500) {
+  const t = $('toast');
+  t.className = 'toast ' + type + ' visible';
+  $('toastText').textContent = msg;
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => { t.className = 'toast ' + type; }, dur);
+}
+function setStatus(txt) {
+  const b = $('statusBar');
+  if (txt) { b.classList.add('visible'); $('statusText').textContent = txt; }
+  else b.classList.remove('visible');
+}
+function setPhase(phase, detail, eta) {
+  const order = ['analyze', 'plan', 'images', 'done'];
+  const idx = order.indexOf(phase);
+  document.querySelectorAll('.step').forEach(el => {
+    const i = order.indexOf(el.dataset.p);
+    el.className = 'step' + (i < idx ? ' done' : i === idx ? ' active' : '');
+  });
+  if (detail !== undefined) $('phaseDetail').textContent = detail || '';
+  if (eta !== undefined) $('phaseEta').textContent = eta || '';
+}
+function fmtEta(s) { if (s < 0 || !isFinite(s)) return ''; return s < 60 ? Math.round(s) + 's' : Math.floor(s / 60) + 'm ' + Math.round(s % 60) + 's'; }
+function sanitize(t) { return String(t == null ? '' : t).replace(/[\u2018\u2019\u201B\u2032\u02BC]/g, "'").replace(/[\u201C\u201D\u201F\u2033]/g, '"').replace(/\u2013|\u2014/g, '-').replace(/\u2026/g, '...').replace(/[\u200B-\u200D\uFEFF]/g, '').replace(/\u00A0|\u202F/g, ' '); }
+function trunc(t, n) { if (!t) return ''; const s = String(t).replace(/\s+/g, ' ').trim(); return s.length <= n ? s : s.slice(0, n - 1) + '…'; }
+
+function setUILocked(locked) {
+  state.uiLocked = locked;
+  document.body.classList.toggle('locked', locked);
+  const ids = ['keysInput','validateBtn','clearBtn','refInput','removeRefBtn','analyzeBtn','promptInput'];
+  ids.forEach(id => { const el = $(id); if (el) el.disabled = locked; });
+  updateGenBtn();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STOCKAGE
+// ═══════════════════════════════════════════════════════════════
+const _mem = {};
+let _lsOk = false, _ssOk = false;
+try { localStorage.setItem('__t', '1'); localStorage.removeItem('__t'); _lsOk = true; } catch (e) {}
+try { sessionStorage.setItem('__t', '1'); sessionStorage.removeItem('__t'); _ssOk = true; } catch (e) {}
+const STORAGE_OK = _lsOk || _ssOk;
+function storageGet(k) {
+  if (_lsOk) { try { const v = localStorage.getItem(k); if (v !== null) return v; } catch (e) {} }
+  if (_ssOk) { try { const v = sessionStorage.getItem(k); if (v !== null) return v; } catch (e) {} }
+  return Object.prototype.hasOwnProperty.call(_mem, k) ? _mem[k] : null;
+}
+function storageSet(k, v) {
+  _mem[k] = String(v); let ok = false;
+  if (_lsOk) { try { localStorage.setItem(k, v); ok = true; } catch (e) {} }
+  if (_ssOk) { try { sessionStorage.setItem(k, v); ok = true; } catch (e) {} }
+  return ok;
+}
+function storageDel(k) {
+  delete _mem[k];
+  if (_lsOk) { try { localStorage.removeItem(k); } catch (e) {} }
+  if (_ssOk) { try { sessionStorage.removeItem(k); } catch (e) {} }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CLÉS API
+// ═══════════════════════════════════════════════════════════════
+function isValidKeyFormat(k) { return typeof k === 'string' && k.startsWith('sk-') && k.length >= 15 && k.length <= 200; }
+async function quickPing(key) {
+  try {
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 4000);
+    const res = await fetch(API_BASE + '/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: MODEL_TEXT, messages: [{ role: 'user', content: 'ok' }], max_tokens: 1 }),
+      signal: controller.signal
+    });
+    clearTimeout(tid);
+    return res.status !== 401 && res.status !== 403;
+  } catch (e) { return null; }
+}
+async function validateAndSaveKeys() {
+  if (state.uiLocked) return;
+  const raw = $('keysInput').value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  if (raw.length === 0) { toast('Aucune clé à valider', 'error'); return; }
+  setUILocked(true);
+  $('validateBtn').textContent = '⏳ Validation…';
+  human('🔐 Validation de ' + raw.length + ' clé(s)…');
+  const valid = [];
+  for (let i = 0; i < raw.length; i++) {
+    const k = raw[i];
+    if (!isValidKeyFormat(k)) { debug('Clé ' + (i + 1) + ' : format invalide', 'err'); human('❌ Clé ' + (i + 1) + ' : format invalide'); continue; }
+    const ping = await quickPing(k);
+    if (ping === false) { debug('Clé ' + (i + 1) + ' : refusée (401/403)', 'err'); human('❌ Clé ' + (i + 1) + ' : refusée'); continue; }
+    valid.push(k);
+    debug('Clé ' + (i + 1) + ' : OK' + (ping === null ? ' (offline, conservée)' : ''), 'ok');
+    human('✅ Clé ' + (i + 1) + ' valide');
+  }
+  state.apiKeys = valid;
+  try { storageSet(KEYS_STORAGE, JSON.stringify(valid)); } catch (e) {}
+  const st = $('keyStatus');
+  if (valid.length > 0) { st.className = 'status-line ok'; $('keyStatusText').textContent = valid.length + ' clé(s) enregistrée(s) · rotation auto'; }
+  else { st.className = 'status-line err'; $('keyStatusText').textContent = 'Aucune clé valide'; }
+  $('validateBtn').textContent = '🔐 Valider et enregistrer';
+  updateKeyBadge();
+  setUILocked(false);
+  toast(valid.length + ' clé(s) enregistrée(s)', valid.length > 0 ? 'success' : 'error', 3500);
+}
+function getKey() {
+  if (state.apiKeys.length === 0) return '';
+  const k = state.apiKeys[state.keyIndex % state.apiKeys.length];
+  state.keyIndex++;
+  return k;
+}
+function updateKeyBadge() {
+  $('keyBadge').textContent = state.apiKeys.length + ' validée' + (state.apiKeys.length > 1 ? 's' : '');
+  updateGenBtn();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// IMAGE DE RÉFÉRENCE
+// ═══════════════════════════════════════════════════════════════
+function compressImg(dataUrl, maxSide) {
+  maxSide = maxSide || REF_MAX_SIDE;
+  return new Promise(res => {
+    const img = new Image();
+    img.onload = () => {
+      let { width: w, height: h } = img;
+      const s = Math.min(1, maxSide / Math.max(w, h));
+      w = Math.max(1, Math.round(w * s)); h = Math.max(1, Math.round(h * s));
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const x = c.getContext('2d');
+      x.fillStyle = '#fff'; x.fillRect(0, 0, w, h);
+      x.drawImage(img, 0, 0, w, h);
+      let url = c.toDataURL('image/jpeg', 0.88);
+      let q = 0.88;
+      while (url.length > 1.5 * 1024 * 1024 && q > 0.5) { q -= 0.1; url = c.toDataURL('image/jpeg', q); }
+      res(url);
+    };
+    img.onerror = () => res(dataUrl);
+    img.src = dataUrl;
+  });
+}
+async function handleRefFile(f) {
+  if (state.uiLocked) return;
+  if (!f) return;
+  if (!f.type.startsWith('image/')) { toast('Ce fichier n\'est pas une image', 'error'); return; }
+  if (f.size > 30 * 1024 * 1024) { toast('Image trop lourde (max 30 Mo)', 'error'); return; }
+  setStatus('Chargement de l\'image…');
+  try {
+    const dataUrl = await new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = e => res(e.target.result);
+      r.onerror = rej;
+      r.readAsDataURL(f);
+    });
+    const compressed = await compressImg(dataUrl);
+    state.refImage = compressed;
+    state.refName = f.name;
+    state.world = null;
+    try { storageSet(REF_STORAGE, JSON.stringify({ img: compressed, name: f.name })); } catch (e) {}
+    refreshRefPanel();
+    human('📷 Image chargée : ' + f.name + ' (' + Math.round(compressed.length / 1024) + ' Ko)');
+    toast('Image chargée', 'success');
+  } catch (e) {
+    debug('Erreur chargement image : ' + e.message, 'err');
+    toast('Chargement impossible', 'error');
+  }
+  setStatus(null);
+}
+function refreshRefPanel() {
+  const prev = $('refPreview'), img = $('refPreviewImg'), name = $('refPreviewName');
+  const btnAnalyze = $('analyzeBtn');
+  const badge = $('refBadge');
+  const has = !!state.refImage;
+  if (has) { img.src = state.refImage; name.textContent = state.refName || 'référence'; prev.classList.remove('hidden'); }
+  else { img.removeAttribute('src'); prev.classList.add('hidden'); }
+  badge.textContent = has ? '1 image' : '0 image';
+  if (btnAnalyze) {
+    btnAnalyze.disabled = !has || state.isAnalyzing || state.uiLocked;
+    btnAnalyze.textContent = state.isAnalyzing ? 'Analyse…' : "Analyser";
+  }
+  updateGenBtn();
+}
+function removeRef() {
+  if (state.uiLocked) return;
+  state.refImage = null; state.refName = null;
+  storageDel(REF_STORAGE);
+  refreshRefPanel();
+  $('refInput').value = '';
+  toast('Image retirée', 'warn');
+}
+function renderAnalysisBox() {
+  const el = $('analysisBox');
+  if (!state.world) { el.classList.remove('visible'); el.innerHTML = ''; return; }
+  const a = state.world;
+  el.innerHTML =
+    '<span class="k">▸ VISAGE</span> ' + esc(trunc(a.face_dna, 700)) + '\n\n' +
+    (a.body_dna ? '<span class="k">▸ CORPS</span> ' + esc(a.body_dna) + '\n\n' : '') +
+    (a.outfit ? '<span class="k">▸ TENUE</span> ' + esc(a.outfit) + '\n\n' : '') +
+    (a.context ? '<span class="k">▸ CONTEXTE</span> ' + esc(a.context) + '\n\n' : '') +
+    (a.mood ? '<span class="k">▸ AMBIANCE</span> ' + esc(a.mood) : '');
+  el.classList.add('visible');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PROMPT UI
+// ═══════════════════════════════════════════════════════════════
+function updatePromptBadge() {
+  const v = $('promptInput').value || '';
+  const words = v.trim() ? v.trim().split(/\s+/).length : 0;
+  $('promptBadge').textContent = words + ' mot' + (words > 1 ? 's' : '');
+  state.userPrompt = v;
+  try { storageSet(PROMPT_STORAGE, v); } catch (e) {}
+  updateGenBtn();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BOUTON GENERER
+// ═══════════════════════════════════════════════════════════════
+function updateGenBtn() {
+  const btn = $('genBtn');
+  const hasInput = state.refImage || (state.userPrompt || '').trim();
+  const ok = state.apiKeys.length > 0 && hasInput && !state.isRunning && !state.uiLocked;
+  btn.disabled = !ok;
+  if (state.isRunning) btn.textContent = 'Génération en cours…';
+  else if (state.apiKeys.length === 0) btn.textContent = 'Ajoutez une clé API';
+  else if (!hasInput) btn.textContent = 'Ajoutez une image ou un prompt';
+  else btn.textContent = '▸ Générer les 50 styles';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// API
+// ═══════════════════════════════════════════════════════════════
+async function apiImage(prompt) {
+  const key = getKey();
+  if (!key) throw new Error('Aucune clé API');
+  for (let attempt = 0; attempt < 5; attempt++) {
+    if (state.stopRequested) throw new Error('Arrêt');
+    try {
+      const body = {
+        model: MODEL_IMAGE,
+        prompt: sanitize(prompt),
+        n: 1,
+        size: IMAGE_SIZE,
+        response_format: 'url'
+      };
+      const res = await fetch(API_BASE + '/images/generations', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      debug('IMG HTTP ' + res.status, res.ok ? 'ok' : 'warn');
+      if (res.status === 429) { await sleep([10, 20, 35, 50, 75][attempt] * 1000); continue; }
+      if (res.status === 503) { await sleep([8, 15, 30, 45, 60][attempt] * 1000); continue; }
+      if (!res.ok) { const err = await res.text(); debug('HTTP ' + res.status + ' · ' + err.slice(0, 200), 'err'); throw new Error('HTTP ' + res.status); }
+      const data = await res.json();
+      const item = data.data && data.data[0];
+      if (item && item.url) return item.url;
+      if (item && item.b64_json) return 'data:image/png;base64,' + item.b64_json;
+      throw new Error('Réponse invalide');
+    } catch (e) {
+      if (e.message === 'Arrêt') throw e;
+      if (attempt === 4) throw e;
+      await sleep([5, 10, 20, 35][attempt] * 1000);
+    }
+  }
+  throw new Error('Échec après 5 tentatives');
+}
+async function apiChat(system, user, label, maxTokens, temp) {
+  const key = getKey();
+  if (!key) throw new Error('Aucune clé API');
+  const body = {
+    model: MODEL_TEXT,
+    messages: [
+      { role: 'system', content: sanitize(system) },
+      { role: 'user', content: sanitize(user) }
+    ],
+    temperature: temp !== undefined ? temp : 0.6,
+    max_tokens: maxTokens || 3000
+  };
+  const res = await fetch(API_BASE + '/chat/completions', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  debug('CHAT ' + label + ' HTTP ' + res.status, res.ok ? 'ok' : 'err');
+  if (!res.ok) { const t = await res.text(); throw new Error('HTTP ' + res.status + ' ' + t.slice(0, 120)); }
+  const d = await res.json();
+  const ch = d.choices && d.choices[0];
+  return (ch && ch.message && (ch.message.content || ch.message.reasoning_content)) || null;
+}
+async function apiVision(system, user, img, label, maxTokens, temp) {
+  const key = getKey();
+  if (!key) throw new Error('Aucune clé API');
+  const body = {
+    model: MODEL_TEXT,
+    messages: [
+      { role: 'system', content: sanitize(system) },
+      { role: 'user', content: [
+        { type: 'text', text: sanitize(user) },
+        { type: 'image_url', image_url: { url: img } }
+      ] }
+    ],
+    temperature: temp !== undefined ? temp : 0.3,
+    max_tokens: maxTokens || 2000
+  };
+  const res = await fetch(API_BASE + '/chat/completions', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  debug('VISION ' + label + ' HTTP ' + res.status, res.ok ? 'ok' : 'err');
+  if (!res.ok) { const t = await res.text(); throw new Error('HTTP ' + res.status + ' ' + t.slice(0, 120)); }
+  const d = await res.json();
+  const ch = d.choices && d.choices[0];
+  return (ch && ch.message && (ch.message.content || ch.message.reasoning_content)) || null;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// JSON ROBUSTE
+// ═══════════════════════════════════════════════════════════════
+function repairJson(text) {
+  if (!text) return null;
+  let c = String(text).trim();
+  const fm = c.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fm) c = fm[1].trim();
+  const fb = c.indexOf('{');
+  if (fb < 0) return null;
+  c = c.slice(fb);
+  const lb = c.lastIndexOf('}');
+  if (lb > 0) c = c.slice(0, lb + 1);
+  let out = '', inS = false, esc2 = false;
+  for (let i = 0; i < c.length; i++) {
+    const ch = c[i];
+    if (esc2) { if ('"\\/bfnrtu'.includes(ch)) { out += '\\' + ch; } else out += ch; esc2 = false; continue; }
+    if (ch === '\\') { esc2 = true; continue; }
+    if (ch === '"') { inS = !inS; out += ch; continue; }
+    if (inS) {
+      if (ch === '\n') out += '\\n';
+      else if (ch === '\r') out += '\\r';
+      else if (ch === '\t') out += '\\t';
+      else if (ch.charCodeAt(0) < 32) out += '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0');
+      else out += ch;
+      continue;
+    }
+    out += ch;
+  }
+  if (esc2) out += '\\';
+  if (inS) out += '"';
+  out = out.replace(/,\s*([}\]])/g, '$1');
+  return out;
+}
+function extractJson(text) {
+  const r = repairJson(text);
+  if (!r) return null;
+  try { return JSON.parse(r); } catch (e1) {
+    try {
+      let ob = 0, ok = 0, inS = false, es = false;
+      const t = r;
+      for (let i = 0; i < t.length; i++) {
+        const ch = t[i];
+        if (es) { es = false; continue; }
+        if (ch === '\\') { es = true; continue; }
+        if (ch === '"') { inS = !inS; continue; }
+        if (inS) continue;
+        if (ch === '{') ob++; else if (ch === '}') ob--;
+        else if (ch === '[') ok++; else if (ch === ']') ok--;
+      }
+      let b = t;
+      if (inS) b += '"';
+      while (ok-- > 0) b += ']';
+      while (ob-- > 0) b += '}';
+      return JSON.parse(b);
+    } catch (e2) { debug('PARSE : ' + e2.message, 'warn'); return null; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ANALYSE — extraire le DNA du personnage
+// ═══════════════════════════════════════════════════════════════
+const SYS_ANALYST = [
+  'You are a world-class casting director and portrait analyst.',
+  'You receive either an image of a character, a written description, or both.',
+  'Your ONLY job is to produce a forensic, reusable description of that character so any text-to-image AI can recreate the SAME person in 50 different styles.',
+  '',
+  'CRITICAL RULES:',
+  '- NEVER copy the field names or placeholder text into your output.',
+  '- Write REAL, SPECIFIC, SENSORY descriptions.',
+  '- The face description must be 80-140 words, forensic, precise (shape of jaw, nose, eyes, brows, lips, hair, skin, marks, typical expression).',
+  '- Output ONLY valid JSON. No markdown, no fences. Straight apostrophes.'
+].join(' ');
+
+async function analyzeCharacter(dataUrl, userPrompt) {
+  const schema = {
+    face_dna: "A Caucasian woman in her early thirties, pale skin with a scatter of freckles across the bridge of the nose, oval face, high cheekbones, softly squared jaw, small rounded chin, smooth forehead marked by a single faint horizontal line. Dark brown eyebrows, naturally full with a slight arch. Deep-set hazel eyes with green flecks, thick dark lashes. Straight narrow nose with a small rounded tip. Full dusty-rose lips. Dark brown wavy hair cut just above the shoulders. A small mole on the left cheekbone. Typical expression: watchful, mildly sad, intelligent.",
+    body_dna: "Tall, slender build, narrow shoulders, upright and slightly guarded posture, long delicate hands with short unpainted nails.",
+    outfit: "Charcoal wool trench coat, cream silk shirt buttoned to the collar, dark leather gloves, low-heeled black boots.",
+    context: "Paris, 1962, jazz district at night, private detective at work",
+    mood: "melancholic, nocturnal, contemplative",
+    has_face: true
+  };
+
+  const usr = [
+    userPrompt ? ('USER DESCRIPTION / CONTEXT:\n' + userPrompt + '\n') : '',
+    dataUrl ? 'An image of the character is provided below. Analyse it with extreme precision.' : 'No image. Invent a coherent, specific character inspired by the description above.',
+    '',
+    'Produce ONE JSON object with EXACTLY these keys:',
+    '- "face_dna": forensic face description (80-140 words, English)',
+    '- "body_dna": body / posture (20-40 words, English)',
+    '- "outfit": default clothing (10-30 words, English)',
+    '- "context": era / place / activity (10-25 words, English)',
+    '- "mood": 3-6 adjectives (English)',
+    '- "has_face": true if a clear face is visible, otherwise false',
+    '',
+    'FORMAT EXAMPLE (do NOT copy the content):',
+    JSON.stringify(schema, null, 2),
+    '',
+    'NOW OUTPUT THE REAL JSON FOR OUR CHARACTER. Output ONLY the JSON object.'
+  ].filter(Boolean).join('\n');
+
+  const raw = dataUrl
+    ? await apiVision(SYS_ANALYST, usr, dataUrl, 'Analyse personnage', 2500, 0.4)
+    : await apiChat(SYS_ANALYST, usr, 'Analyse prompt', 2500, 0.6);
+
+  const p = extractJson(raw);
+  if (!p) throw new Error('Analyse impossible — JSON invalide');
+
+  const world = {
+    face_dna: String(p.face_dna || '').trim(),
+    body_dna: String(p.body_dna || '').trim(),
+    outfit: String(p.outfit || '').trim(),
+    context: String(p.context || '').trim(),
+    mood: String(p.mood || '').trim(),
+    has_face: p.has_face !== false
+  };
+  if (!world.face_dna || world.face_dna.length < 30) {
+    throw new Error('Description du visage trop courte');
+  }
+  return world;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CONSTRUCTION DU PROMPT IMAGE
+// ═══════════════════════════════════════════════════════════════
+function characterBlock() {
+  const w = state.world || {};
+  const parts = [];
+  if (w.face_dna) parts.push('CHARACTER FACE (identical, do not alter any feature): ' + w.face_dna);
+  if (w.body_dna) parts.push('BODY: ' + w.body_dna);
+  if (w.outfit) parts.push('DEFAULT OUTFIT: ' + w.outfit);
+  if (w.context) parts.push('CONTEXT: ' + w.context);
+  return parts.join('\n');
+}
+
+function buildStylePrompt(style) {
+  const w = state.world || {};
+  const parts = [];
+  parts.push('STYLE — ' + style.name + ' (' + style.tag + ')');
+  parts.push(style.prompt);
+  parts.push('');
+  parts.push(characterBlock());
+  parts.push('');
+  parts.push('RULES:');
+  parts.push('- The person must remain RECOGNIZABLE and consistent with the character description above (same face, same features).');
+  parts.push('- Reinterpret them fully in this specific style / era / art direction.');
+  parts.push('- Vertical 9:16 portrait composition.');
+  parts.push('- NO text, NO watermark, NO logo, NO caption in the image.');
+  parts.push('- High quality, single subject, cinematic or artistic rendering as requested by the style.');
+  return parts.filter(Boolean).join('\n');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDU
+// ═══════════════════════════════════════════════════════════════
+function renderStylesPanel() {
+  const p = $('stylesPanel');
+  $('stylesCount').textContent = STYLES.length + ' / ' + STYLES.length;
+  let html = '';
+  STYLES.forEach((s, i) => {
+    html += '<div class="style-row">';
+    html += '<span class="num">#' + (i + 1) + '</span>';
+    html += '<span class="lbl">' + esc(s.name) + '</span>';
+    html += '<span style="margin-left:auto;color:#64748b;font-size:.62rem;font-family:ui-monospace,monospace">' + esc(s.tag) + '</span>';
+    html += '</div>';
+  });
+  $('stylesList').innerHTML = html;
+  p.classList.add('visible');
+}
+
+function buildCardHTML(t) {
+  let imgHtml;
+  if (t.url && t.url !== 'error') imgHtml = '<img src="' + t.url + '" loading="lazy" alt="">';
+  else if (t.url === 'error') imgHtml = '<div class="err">✕ Échec<br>' + esc(trunc(t.error || '', 80)) + '</div>';
+  else imgHtml = '<div class="load">Génération…</div>';
+
+  return '<div class="photo-img">' + imgHtml + '</div>' +
+    '<div class="photo-meta">' +
+    '<span class="pbadge sty">🎨 ' + esc(t.style.tag) + '</span>' +
+    '<span class="pbadge num">#' + t.index + '</span>' +
+    '<div class="ptitle">' + esc(t.style.name) + '</div>' +
+    '<div class="pblock">' +
+    '<div class="plabel">📸 Prompt complet</div>' +
+    '<button class="pcopy" data-copy="' + esc(t.fullPrompt) + '">Copier</button>' +
+    '<div class="ptext">' + esc(t.fullPrompt) + '</div>' +
+    '</div>' +
+    (t.url && t.url !== 'error' ? '<a class="popen" href="' + t.url + '" target="_blank" rel="noopener">Ouvrir</a>' : '') +
+    '</div>';
+}
+function attachCopyHandlers(card) {
+  card.querySelectorAll('[data-copy]').forEach(b => b.onclick = (e) => {
+    e.stopPropagation();
+    const ta = document.createElement('textarea');
+    ta.value = b.dataset.copy;
+    ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (er) {}
+    document.body.removeChild(ta);
+    toast(ok ? 'Copié' : 'Copie impossible', ok ? 'success' : 'error', 1500);
+  });
+}
+function renderCard(t) {
+  const grid = $('photoGrid');
+  const card = document.createElement('div');
+  card.className = 'photo';
+  card.dataset.idx = t.index;
+  card.innerHTML = buildCardHTML(t);
+  grid.appendChild(card);
+  attachCopyHandlers(card);
+}
+function updateCard(t) {
+  const old = document.querySelector('.photo[data-idx="' + t.index + '"]');
+  if (!old) { renderCard(t); return; }
+  const card = document.createElement('div');
+  card.className = 'photo';
+  card.dataset.idx = t.index;
+  card.innerHTML = buildCardHTML(t);
+  old.replaceWith(card);
+  attachCopyHandlers(card);
+}
+function updateResultsHeader() {
+  const h = $('resultsHeader');
+  h.classList.remove('hidden');
+  h.style.display = 'flex';
+  $('resultsCount').textContent = state.completed + ' / ' + state.total;
+}
+function updateQueue() {
+  const q = $('queue');
+  q.classList.add('visible');
+  q.innerHTML = '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem;">' +
+    '<span style="color:#fcd34d;font-weight:700;">IMAGES : ' + state.completed + ' / ' + state.total + '</span>' +
+    '<span style="color:#64748b;">' + (state.completed < state.total ? '~' + fmtEta((state.total - state.completed) * 3.5 / Math.max(1, state.apiKeys.length)) : 'Terminé') + '</span>' +
+    '</div>';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PIPELINE
+// ═══════════════════════════════════════════════════════════════
+function buildTasks() {
+  return STYLES.map((s, i) => {
+    const fullPrompt = buildStylePrompt(s);
+    return {
+      index: i + 1,
+      style: s,
+      fullPrompt: fullPrompt,
+      status: 'pending',
+      url: null,
+      error: null
+    };
+  });
+}
+
+async function runGeneration() {
+  if (state.isRunning || state.uiLocked) return;
+  if (state.apiKeys.length === 0) { toast('Validez vos clés API', 'error'); return; }
+  const hasInput = state.refImage || (state.userPrompt || '').trim();
+  if (!hasInput) { toast('Ajoutez une image ou un prompt', 'error'); return; }
+
+  state.isRunning = true;
+  state.stopRequested = false;
+  state.completed = 0;
+  state.total = 0;
+  state.keyIndex = 0;
+  state.startTime = Date.now();
+  state.world = null;
+  state.tasks = [];
+
+  setUILocked(true);
+  $('photoGrid').innerHTML = '';
+  $('resultsHeader').classList.add('hidden');
+  $('stopBtn').classList.remove('hidden');
+  $('stopBtn').disabled = false;
+  $('phaseBar').classList.add('visible');
+  $('queue').classList.remove('visible');
+  $('stylesPanel').classList.remove('visible');
+  updateGenBtn();
+
+  human('🚀 Démarrage…');
+  debug('Démarrage · ' + state.apiKeys.length + ' clé(s) · image=' + (state.refImage ? 'oui' : 'non') + ' · prompt=' + ((state.userPrompt || '').trim() ? 'oui' : 'non'), 'ok');
+
+  try {
+    setPhase('analyze', '🔍 Analyse du personnage…', '');
+    setStatus('Analyse du personnage…');
+    human('🔍 Analyse du personnage…');
+    state.world = await analyzeCharacter(state.refImage, (state.userPrompt || '').trim());
+    if (state.stopRequested) throw new Error('Arrêt');
+    renderAnalysisBox();
+    human('✅ Personnage analysé');
+    setPhase('analyze', '🔍 Analyse OK', '');
+    await sleep(400);
+
+    setPhase('plan', '🎨 Préparation des 50 styles…', '');
+    state.tasks = buildTasks();
+    state.total = state.tasks.length;
+    renderStylesPanel();
+    updateQueue();
+    setPhase('plan', '🎨 ' + state.total + ' styles prêts', '');
+    await sleep(400);
+
+    setPhase('images', '📸 Génération des 50 images…', '');
+    setStatus('Génération des images…');
+    human('📸 Génération des 50 images…');
+    await generateAll();
+    if (state.stopRequested) throw new Error('Arrêt');
+
+    setPhase('done', '✦ Terminé ✦', '');
+    human('✨ Terminé ! ' + state.completed + ' images en ' + fmtEta((Date.now() - state.startTime) / 1000));
+    debug('FIN : ' + state.completed + ' images', 'ok');
+
+  } catch (e) {
+    if (e.message === 'Arrêt') human('⏹ Arrêté');
+    else { debug('Erreur pipeline : ' + e.message, 'err'); human('❌ ' + e.message); }
+  } finally {
+    state.isRunning = false;
+    state.stopRequested = false;
+    $('stopBtn').classList.add('hidden');
+    setUILocked(false);
+    setStatus(null);
+    toast(state.completed + ' image(s)', state.completed > 0 ? 'success' : 'error', 4000);
+  }
+}
+
+async function generateAll() {
+  const tasks = state.tasks;
+  const nKeys = state.apiKeys.length;
+  const globalConcurrency = Math.min(nKeys * CONCURRENCY_PER_KEY, tasks.length);
+  const lastStartPerKey = {};
+  let idx = 0;
+
+  debug('Workers : ' + globalConcurrency + ' (' + nKeys + ' clés × ' + CONCURRENCY_PER_KEY + ')', 'api');
+
+  async function worker(slot) {
+    while (!state.stopRequested && idx < tasks.length) {
+      const myIdx = idx++;
+      const task = tasks[myIdx];
+      if (!task) return;
+      const keySlot = slot % nKeys;
+      const now = Date.now();
+      const wait = Math.max(0, (lastStartPerKey[keySlot] || 0) + DELAY_PER_KEY_MS - now);
+      lastStartPerKey[keySlot] = Date.now() + wait;
+      if (wait > 0) await sleep(wait);
+      if (state.stopRequested) return;
+
+      task.status = 'generating';
+      updateCard(task);
+
+      try {
+        task.url = await apiImage(task.fullPrompt);
+        state.completed++;
+        debug('OK ' + state.completed + '/' + state.total + ' · #' + task.index + ' ' + task.style.name, 'ok');
+        human('🎨 ' + state.completed + '/' + state.total + ' · ' + task.style.name.slice(0, 40));
+      } catch (e) {
+        if (e.message === 'Arrêt') { task.status = 'pending'; return; }
+        task.url = 'error';
+        task.error = e.message;
+        state.completed++;
+        debug('KO · #' + task.index + ' ' + task.style.name + ' · ' + e.message, 'err');
+      }
+      task.status = 'done';
+      updateCard(task);
+      setPhase('images', '📸 ' + state.completed + ' / ' + state.total,
+        '~' + fmtEta((state.total - state.completed) * 3.5 / Math.max(1, nKeys)));
+      updateQueue();
+      updateResultsHeader();
+    }
+  }
+
+  await Promise.all(Array.from({ length: globalConcurrency }, (_, i) => worker(i)));
+}
+
+function stopGeneration() {
+  if (!state.isRunning) return;
+  state.stopRequested = true;
+  human('⏹ Arrêt demandé…');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+function bind() {
+  $('validateBtn').addEventListener('click', validateAndSaveKeys);
+  $('clearBtn').addEventListener('click', () => {
+    if (state.uiLocked) return;
+    $('keysInput').value = '';
+    state.apiKeys = [];
+    storageDel(KEYS_STORAGE);
+    $('keyStatus').className = 'status-line';
+    $('keyStatusText').textContent = 'Aucune clé enregistrée';
+    updateKeyBadge();
+    toast('Clés effacées', 'warn');
+  });
+
+  $('refInput').addEventListener('change', (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (f) handleRefFile(f);
+    e.target.value = '';
+  });
+  $('removeRefBtn').addEventListener('click', removeRef);
+  $('analyzeBtn').addEventListener('click', async () => {
+    if (!state.refImage || state.isAnalyzing || state.uiLocked) return;
+    if (state.apiKeys.length === 0) { toast('Ajoutez une clé API', 'error'); return; }
+    state.isAnalyzing = true;
+    setUILocked(true);
+    refreshRefPanel();
+    setStatus('Analyse en cours…');
+    human('🔍 Analyse du personnage…');
+    try {
+      state.world = await analyzeCharacter(state.refImage, (state.userPrompt || '').trim());
+      renderAnalysisBox();
+      debug('Analyse manuelle OK', 'ok');
+      toast('Analyse terminée', 'success');
+      human('✅ Personnage analysé');
+    } catch (e) {
+      debug('Analyse impossible : ' + e.message, 'err');
+      toast('Analyse impossible', 'error');
+      human('❌ Analyse impossible');
+    } finally {
+      state.isAnalyzing = false;
+      setUILocked(false);
+      refreshRefPanel();
+      setStatus(null);
+    }
+  });
+
+  $('promptInput').addEventListener('input', updatePromptBadge);
+  $('genBtn').addEventListener('click', runGeneration);
+  $('stopBtn').addEventListener('click', stopGeneration);
+
+  const handle = $('panelHandle');
+  const content = $('panelContent');
+  const toggleText = $('panelToggle');
+  let open = false;
+  handle.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') return;
+    open = !open;
+    content.classList.toggle('hidden', !open);
+    toggleText.textContent = (open ? '▲' : '▼') + ' CONSOLE';
+  });
+  $('copyConsoleBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    const txt = state.debugLog.map(d => d.t + ' ' + d.m).join('\n');
+    const ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (er) {}
+    document.body.removeChild(ta);
+    toast(ok ? 'Console copiée' : 'Copie impossible', ok ? 'success' : 'error', 1500);
+  });
+  $('clearConsoleBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    state.debugLog = [];
+    renderDebug();
+    toast('Console effacée', 'warn', 1200);
+  });
+
+  try {
+    const saved = JSON.parse(storageGet(KEYS_STORAGE) || '[]');
+    if (Array.isArray(saved) && saved.length > 0) {
+      state.apiKeys = saved;
+      $('keysInput').value = saved.join('\n');
+      $('keyStatus').className = 'status-line ok';
+      $('keyStatusText').textContent = saved.length + ' clé(s) restaurée(s)';
+    }
+  } catch (e) {}
+
+  try {
+    const refRaw = storageGet(REF_STORAGE);
+    if (refRaw) {
+      const d = JSON.parse(refRaw);
+      if (d && typeof d.img === 'string' && d.img.startsWith('data:image/')) {
+        state.refImage = d.img;
+        state.refName = d.name || 'référence';
+        human('📷 Image restaurée');
+      }
+    }
+  } catch (e) {}
+
+  try {
+    const sp = storageGet(PROMPT_STORAGE);
+    if (sp) $('promptInput').value = sp;
+  } catch (e) {}
+
+  refreshRefPanel();
+  updatePromptBadge();
+  updateKeyBadge();
+
+  human('👋 Prêt. Clés → image/prompt → Générer les 50 styles.');
+  debug('Visual.Studio · 50 STYLES LAB · size=' + IMAGE_SIZE + ' · modèle=' + MODEL_IMAGE, 'api');
+  debug('Styles disponibles : ' + STYLES.length, 'api');
+  if (!STORAGE_OK) debug('Stockage indisponible : session uniquement', 'warn');
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+else bind();
+</script>
+</body>
+</html>
